@@ -1,0 +1,17 @@
+_target_: dataset.arl_jackal.ARLJackalSequence
+name: "ARL_Jackal_pickle"
+
+root: data/ARL_Jackal
+geo_tiff_path: ${.root}/pickle_campus_EPSG32614_scale02_121925.tiff
+
+ground_image_resize: [518, 518]
+aerial_image_resize: [768, 768]
+
+scenes:
+  - run_03_pickle_2026-01-12-17-03-52
+  - run_01_pickle_2026-01-12-16-05-32
+  - run_00_pickle_2026-01-12-15-33-59
+  - run_02_pickle_2026-01-12-16-49-31
+  - run_04_pickle_2026-01-12-17-28-39
+  - pickle_north_2025-12-18-11-44-00
+  - pickle_south_2025-12-18-10-50-42

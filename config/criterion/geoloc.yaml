@@ -1,0 +1,9 @@
+_target_: model.loss.GeoLoc_Loss
+# similarity loss
+init_temp: 0.07
+min_temp: 0.03
+# distinctiveness loss
+lambda_distinctiveness: 1.0
+d_alpha: 10.0
+# VICReg loss
+lambda_aer_vicreg: 0.01

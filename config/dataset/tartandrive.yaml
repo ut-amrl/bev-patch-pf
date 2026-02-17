@@ -1,0 +1,93 @@
+_target_: dataset.tartandrive.TartanDriveDataset
+name: "TartanDrive2"
+
+root: data/TartanDrive2
+geo_tiff_path: ${.root}/gascola_EPSG32617_scale03_082725.tiff
+
+ground_image_resize: [518, 518]
+aerial_image_resize: [768, 768]
+
+# --- sampling parameters ---
+n_poses: 128
+dist_bounds: [3.0, 200.0] # (m)
+r_bounds: [-60.0, 60.0] # (deg)
+radial_power: 1.0
+
+# --- data augmentation ---
+center_jitter: 50.0
+scale_bounds: [0.5, 1.5]
+rotate_augment: True
+color_augment: 1.0
+depth_dropout: 0.2
+
+train_scenes:
+  - 2023-10-26-15-32-25_turnpike_warehouse_fall
+  - 2023-11-14-14-24-21_gupta
+  - 2023-11-14-14-34-53_gupta
+  - 2023-11-14-14-45-20_gupta
+  - 2023-11-14-15-02-21_figure_8
+  - 2023-11-14-15-11-49_rough_rider_turnpike_loop
+  - 2023-11-14-15-22-01_figure_8
+  - figure_8_2023-09-13-17-07-51
+  - figure_8_2023-09-13-17-24-26
+  - figure_8_2023-09-14-11-37-49
+  - figure_8_morning_2023-09-12-10-37-17
+  - figure_8_to_turnpike_2023-09-12-12-22-45
+  - figure_8_turnpike_2023-09-13-17-40-27
+  - gupta_2023-09-13-16-57-23
+  - gupta_2023-09-14-10-47-09
+  - gupta_skydio_2023-09-14-11-03-09
+  - meadows_2023-09-14-11-45-21
+  - meadows_2023-09-14-12-05-05
+  - meadows_2023-09-14-12-08-57
+  - meadows_2023-09-14-12-18-22
+  - slag_heap_2023-09-14-12-23-05
+  - slag_heap_skydio_2023-09-14-12-32-13
+  - turnpike_flat_2023-09-12-13-08-55
+  - turnpike_to_gupta_flat_2023-09-12-14-31-21
+  - turnpike_warehouse_2023-09-13-19-03-05
+  - turnpike_warehouse_2023-09-14-14-07-12
+  # - warehouse_gupta_2023-09-13-16-28-57 # pose is not well aligned
+  - warehouse_gupta_2023-09-13-16-52-58
+
+val_scenes:
+  - 2023-11-14-14-26-22_gupta
+  - gupta_warehouse_2023-09-13-19-12-49
+  - meadows_2023-09-14-12-07-28
+  - slag_heap_skydio_2023-09-14-12-39-40
+  - turnpike_2023-09-12-12-42-49
+  - turnpike_2023-09-12-12-47-34
+  - turnpike_flat_2023-09-12-14-16-06
+  - turnpike_flat_2023-09-12-14-21-03
+  - turnpike_skydio_2023-09-14-13-57-56
+
+test_intra_scenes:
+  - 2023-11-14-14-52-22_gupta
+  - figure_8_2023-09-14-12-48-02
+  - figure_8_morning_slow_2023-09-12-11-06-32
+  - gupta_2023-09-14-11-12-19
+  - warehouse_gupta_skydio_2023-09-13-16-45-20
+  - warehouse_to_fence_2023-09-12-10-19-17
+
+test_cross_scenes:
+  - 2023-10-26-14-42-35_turnpike_afternoon_fall
+  - 2023-11-02-16-00-43_down_meadows
+  - figure_8_to_turnpike_pt2_2023-09-12-12-28-48
+  - meadow_turnpike_2023-09-14-13-35-35
+  - rough_rider_2023-09-14-12-57-00
+  - sam_loop_2023-09-27-13-04-54
+  - turnpike_2023-09-12-12-39-19
+  - turnpike_2023-09-12-12-53-32
+  - turnpike_2023-09-13-18-09-45
+  - turnpike_2023-09-13-18-15-03
+  - turnpike_2023-09-13-18-37-40
+  - turnpike_2023-09-13-18-42-57
+  - turnpike_2023-09-14-13-20-40
+  - turnpike_flat_2023-09-12-13-11-44
+  - turnpike_flat_2023-09-12-13-42-26
+  - turnpike_skydio_2023-09-13-18-00-11
+
+hard_scenes:
+  - turnpike_flat_2023-09-12-13-11-44
+  - turnpike_2023-09-13-18-42-57
+  - turnpike_flat_2023-09-12-13-42-26

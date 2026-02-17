@@ -1,0 +1,51 @@
+_target_: dataset.gq.GQDataset
+name: "GQ"
+
+root: data/GQ
+geo_tiff_path: ${.root}/GQ_EPSG32618_scale03_091025.tiff
+
+ground_image_resize: [518, 518]
+aerial_image_resize: [768, 768]
+
+# --- sampling parameters ---
+n_poses: 128
+dist_bounds: [3.0, 200.0] # (m)
+r_bounds: [-60.0, 60.0] # (deg)
+radial_power: 1.0
+
+# --- data augmentation ---
+center_jitter: 50.0
+scale_bounds: [0.5, 1.5]
+rotate_augment: True
+color_augment: 1.0
+depth_dropout: 0.2
+
+train_scenes:
+  - 2024-08-12-17-41-07
+  - 2024-08-13-11-37-53
+  # - 2024-08-13-11-48-00
+  - 2024-08-13-16-36-24
+  - 2024-08-13-16-41-44
+  - 2024-08-13-16-45-06
+  - 2024-08-13-17-07-31
+  - 2024-08-13-17-14-03
+  - 2024-08-15-12-53-53
+  - 2024-08-15-12-56-35
+
+val_scenes:
+  # - 2024-08-13-11-34-23 # bad depth
+  - 2024-08-13-11-59-52
+  - 2024-08-15-13-08-57
+
+test_intra_scenes:
+  - 2024-08-13-11-28-57
+  - 2024-08-13-16-48-47
+  - 2024-08-15-13-23-03
+
+test_cross_scenes:
+  - 2024-08-13-16-56-52
+  - 2024-08-15-12-40-46
+  - 2024-08-15-13-08-57
+
+test_failed:
+  - 2024-08-13-16-56-52

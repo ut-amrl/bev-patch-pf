@@ -1,0 +1,40 @@
+# @package _global_
+
+defaults:
+  - model: bev_patch_net
+  - criterion: geoloc
+  - optimizer: adamw
+  - scheduler: cosine_warmup
+  - dataset@datasets.0: tartandrive
+  - dataset@datasets.1: gq
+  - dataset@datasets.2: arl_jackal_eastwood
+  - dataset@datasets.3: arl_jackal_ahg
+  - dataset@datasets.4: arl_jackal_onioncreek
+  - dataset@datasets.5: arl_jackal_pickle
+  - _self_
+
+dataset_name: TartanDrive2_GQ_Jackal
+output_dir: ./output/train/${dataset_name}/${model.name}/${now:%Y%m%d_%H%M%S}
+hydra:
+  run:
+    dir: ${output_dir}
+
+# --- training parameters ---
+epochs: 5
+batch_size: 8
+train_n_poses: 28
+clip_grad_norm: 1.0
+
+# --- validation parameters ---
+val_n_poses: 96
+max_frames_per_val_scene: 500
+visualize_every_n_steps_train: 500
+visualize_every_n_steps_eval: 100
+
+# --- misc ---
+seed: 42
+ckpt_path: null
+wandb: True
+
+device: cuda
+amp: True

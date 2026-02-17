@@ -1,0 +1,13 @@
+_target_: dataset.arl_jackal.ARLJackalSequence
+name: "ARL_Jackal_eastwood"
+
+root: data/ARL_Jackal
+geo_tiff_path: ${.root}/ut_eastwood_park_EPSG32614_scale03_082725.tiff
+
+ground_image_resize: [518, 518]
+aerial_image_resize: [768, 768]
+
+scenes:
+  - eastwood_2025_08_13-16_53_17
+  - eastwood_2025_08_13-17_09_38
+  - eastwood_2025_08_13-17_15_58

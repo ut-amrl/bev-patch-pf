@@ -1,0 +1,11 @@
+_target_: dataset.alphatruck.AlphaTruckSequence
+name: "AlphaTruck"
+
+root: data/AlphaTruck
+geo_tiff_path: ${.root}/ut_ahg_EPSG32614_scale01_080425.tiff
+
+ground_image_resize: [518, 518]
+aerial_image_resize: [768, 768]
+
+scenes:
+  - AHG_courtyard_fast

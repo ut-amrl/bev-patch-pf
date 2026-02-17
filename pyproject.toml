@@ -1,0 +1,55 @@
+[project]
+name = "BEV-Patch-PF"
+version = "0.1.0"
+description = "Particle Filtering with BEV-Aerial Feature Matching for Offline Geo-Localization"
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "MIT"}
+authors = [
+    {name = "Dongmyeong Lee", email = "domlee@utexas.edu"}
+]
+dependencies = [
+    "numpy==1.26.4", # matched with manifpy
+    "torch==2.7.1",
+    "torchvision==0.22.1",
+    "transformers",
+    "timm",
+    "opencv-python",
+    "pyproj",
+    "rasterio",
+    "hydra-core",
+    "matplotlib",
+    "scikit-learn",
+    "scipy",
+    "pandas",
+    "tqdm",
+    "pyyaml",
+    "rerun-sdk",
+    "wandb",
+    "onnxruntime-gpu",
+    "onnx",
+]
+
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.11",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = ["D203", "D213"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

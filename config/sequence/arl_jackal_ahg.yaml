@@ -1,0 +1,11 @@
+_target_: dataset.arl_jackal.ARLJackalSequence
+name: "ARL_Jackal_AHG"
+
+root: data/ARL_Jackal
+geo_tiff_path: ${.root}/ut_ahg_EPSG32614_scale01_080425.tiff
+
+ground_image_resize: [518, 518]
+aerial_image_resize: [768, 768]
+
+scenes:
+  - ahg_courtyard_2025_07_03-18_09_49

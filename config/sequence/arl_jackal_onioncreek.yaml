@@ -1,0 +1,11 @@
+_target_: dataset.arl_jackal.ARLJackalSequence
+name: "ARL_Jackal_onioncreek"
+
+root: data/ARL_Jackal
+geo_tiff_path: ${.root}/onioncreek_EPSG32614_scale03_121225.tiff
+
+ground_image_resize: [518, 518]
+aerial_image_resize: [768, 768]
+
+scenes:
+  - onioncreek_2026-01-29-16-38-31

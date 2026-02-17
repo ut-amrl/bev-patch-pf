@@ -1,0 +1,28 @@
+# @package _global_
+
+defaults:
+  - model: bev_patch_net
+  - sequence: tartandrive
+  - _self_
+
+run:
+  n_particles: 128
+  init_noise_sigma: [3.0, 3.0, 0.174]
+  # resampling params
+  n_eff_threshold: 0.3
+  resample_noise_sigma: [0.1, 0.1, 0.05]
+  # observation model params
+  var_ema_alpha: 0.2
+  var_temp: 0.01
+  likelihood_temp: 1.0
+  # motion model params
+  action_gain: [0.5, 0.5, 0.5]
+  drift_gain: [1.0, 1.0, 1.0]
+
+seed: 42
+ckpt_path: null
+
+output_dir: ./output/pf/${sequence.name}
+hydra:
+  run:
+    dir: ${output_dir}

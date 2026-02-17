@@ -1,0 +1,13 @@
+_target_: model.bev_patch_net.BEVPatchNet
+name: "BEV-Patch-Net"
+
+gnd_backbone_name: "facebook/dinov2-small"
+aer_backbone_name: "swinv2_tiny_window8_256"
+
+bev_shape: [224, 224]
+aer_img_size: 768
+
+bev_dim: 64
+hidden_dim: 64
+out_dim: 32
+dropout: 0.2

@@ -1,0 +1,18 @@
+_target_: dataset.gq.GQSequence
+name: "GQ"
+
+root: data/GQ
+geo_tiff_path: ${.root}/GQ_EPSG32618_scale03_091025.tiff
+
+ground_image_resize: [518, 518]
+aerial_image_resize: [768, 768]
+
+scenes:
+  # Seen Routes
+  - 2024-08-13-11-28-57
+  - 2024-08-13-16-48-47
+  # - 2024-08-15-13-23-03 (bad odom)
+  # Unseen Routes
+  # - 2024-08-13-16-56-52 (bad odom)
+  - 2024-08-15-12-40-46
+  - 2024-08-15-13-08-57
