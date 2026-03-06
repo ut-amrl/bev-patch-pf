@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Particle Filtering with BEV-Aerial Feature Matching for Off-Road Geo-Localization.">
+  <meta name="keywords" content="BEV-Patch-PF, Geo-Localization, Robotics">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BEV-Patch-PF: Particle Filtering for Geo-Localization</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/amrl-logo.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div class="navbar-menu">
+      <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+        <!-- <a class="navbar-item" href="https://dongmyeong.com">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a> -->
+
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            More Research
+          </a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://bev-patch-pf.github.io">
+              BEV-Patch-PF
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">BEV-Patch-PF: Particle Filtering with<br>BEV-Aerial Feature
+              Matching for<br>Off-Road Geo-Localization</h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                Dongmyeong Lee<sup>1</sup>,</span>
+              <span class="author-block">
+                Jesse Quattrociocchi<sup>2</sup>,</span>
+              <span class="author-block">
+                Christian Ellis<sup>2</sup>,
+              </span>
+              <span class="author-block">
+                Rwik Rana<sup>1</sup>,
+              </span><br>
+              <span class="author-block">
+                Amanda Adkins<sup>1</sup>,
+              </span>
+              <span class="author-block">
+                Adam Uccello<sup>2</sup>,
+              </span>
+              <span class="author-block">
+                Garrett Warnell<sup>1,2</sup>
+              </span>
+              <span class="author-block">
+                <a href="https://www.joydeepb.com/">Joydeep Biswas</a><sup>2</sup>
+              </span>
+            </div>
+
+            <br>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>University of Texas at Austin,</span>
+              <span class="author-block"><sup>2</sup>DEVCOM Army Research Laboratory</span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2512.15111" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+                <!-- Code Link. -->
+                <span class="link-block">
+                  <a href="https://github.com/ut-amrl/bev-patch-pf" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+                <!-- Dataset Link. -->
+                <span class="link-block">
+                  <a href="" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="far fa-images"></i>
+                    </span>
+                    <span>Data (coming soon)</span>
+                  </a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <div class="columns is-centered is-vcentered">
+          <div class="column has-text-centered">
+            <img src="./static/images/pipeline.png" alt="Overall Pipeline" width="100%">
+            <h2 class="subtitle">
+              Pipeline Overview
+            </h2>
+          </div>
+          <div class="column has-text-centered">
+            <img src="./static/images/network.png" alt="Network Architecture" width="80%">
+            <h2 class="subtitle">
+              BEV-Aerial Feature Network Architecture
+            </h2>
+          </div>
+        </div>
+        <h2 class="subtitle has-text-centered">
+          <strong><span class="dbpp">BEV-Patch-PF</span></strong> evaluates each particle hypothesis
+          <em>x<sub>t</sub><sup>i</sup></em>
+          by matching a patch <em>F</em>[<em>x<sub>t</sub><sup>i</sup></em>] cropped from the local aerial feature map
+          <em style="margin-right: 5px;">F</em> against the robot's bird's-eye-view (BEV) feature <em>G</em>.
+        </h2>
+        </h2>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              We propose <strong><span class="dbpp">BEV-Patch-PF</span></strong>, a GPS-free sequential geo-localization
+              system
+              that integrates a particle filter with learned bird's-eye-view (BEV) and aerial feature maps. From onboard
+              RGB and depth images, we construct a BEV feature map.
+              For each 3-DoF particle pose hypothesis, we crop the corresponding patch from an aerial feature map
+              computed from a local aerial image queried around the approximate location.
+              <span class="dbpp">BEV-Patch-PF</span> computes a per-particle log-likelihood by matching the BEV
+              features to the aerial patch features.
+            </p>
+            <p>
+              On two real-world off-road datasets, our method achieves <i>7.5x</i> lower absolute trajectory
+              error (ATE) on seen routes and <i>7.0x</i> lower ATE on unseen routes compared to a retrieval-based
+              baseline, while maintaining accuracy under dense canopy and shadow. The system runs in real time at
+              <i>10 Hz</i> on an NVIDIA Tesla T4, enabling practical robot deployment.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!--/ Abstract. -->
+
+      <!-- Paper video. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Video</h2>
+          <div class="publication-video">
+            <iframe src="https://www.youtube.com/embed/lBh7ALKvhEM?si=A8Wh_g7EJKuVQPC7" frameborder="0"
+              allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+      <!--/ Paper video. -->
+    </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered">
+
+        <!-- TartanDrive2.0 -->
+        <div class="column">
+          <div class="content">
+            <h2 class="title is-3">TartanDrive2.0</h2>
+            <p>
+              Demonstration on the <strong>TartanDrive 2.0</strong> dataset using an ATV in off-road terrain.
+            </p>
+            <video id="tartandrive" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/tartandrive.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+
+        <!-- GQ -->
+        <div class="column">
+          <h2 class="title is-3">GQ Dataset</h2>
+          <div class="columns is-centered">
+            <div class="column content">
+              <p>
+                Demonstration in the <strong>Grace Quarters</strong> environment with a <strong>Clearpath
+                  Warthog</strong>, handling canopy and shadows.
+              </p>
+              <video id="gq" autoplay controls muted loop playsinline height="100%">
+                <source src="./static/videos/gq.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="columns is-centered">
+
+        <!-- Urban Park. -->
+        <div class="column">
+          <div class="content">
+            <h2 class="title is-3">Urban Park</h2>
+            <p>
+              Real-time deployment in a local <strong>urban park</strong> using a <strong>Clearpath Jackal</strong>
+              (equipped with a Tesla T4).
+            </p>
+            <video id="urban_park" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/urban_park.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+
+        <!-- Campus -->
+        <div class="column">
+          <h2 class="title is-3">Campus</h2>
+          <div class="columns is-centered">
+            <div class="column content">
+              <p>
+                Real-time deployment on a university campus using a <strong>1:8 scale high-speed vehicle</strong>
+                (equipped with a Jetson AGX Orin).
+              </p>
+              <video id="alphatruck" autoplay controls muted loop playsinline height="100%">
+                <source src="./static/videos/alphatruck.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+
+      </div>
+  </section>
+
+  <section class="section" id="Acknowledgments">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Acknowledgments</h2>
+          <div class="content has-text-justified">
+            <p>
+              This work is partially supported by the ARL SARA (W911NF-24-2-0025 and W911NF-23-2-0211). Any
+              opinions,
+              findings, and conclusions expressed in this material are those of the authors and do not necessarily
+              reflect the views of the sponsors.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@article{TBD,
+  author    = {Lee, Dongmyeong and Quattrociocchi, Jesse and Ellis, Christian and Rana, Rwik and Adkins, Amanda and Uccello, Adam and Warnell, Garrett and Biswas, Joydeep},
+  title     = {BEV-Patch-PF: Particle Filtering with BEV-Aerial Feature Matching for Off-Road Geo-Localization},
+  journal   = {TBD},
+  year      = {2026},
+}</code></pre>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website is licensed under a <a rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0
+                International License</a>.
+              <br>
+              Template derived from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
