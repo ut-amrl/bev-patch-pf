@@ -1,0 +1,32 @@
+_target_: dataset.arl_jackal.ARLJackalDataset
+name: "ARL_Jackal_onioncreek"
+
+root: data/ARL_Jackal
+geo_tiff_path: ${.root}/onioncreek_EPSG32614_scale03_030826.tiff
+
+ground_image_resize: [512, 512]
+aerial_image_resize: [768, 768]
+
+# --- sampling parameters ---
+n_poses: 128
+dist_bounds: [5.0, 100.0] # (m)
+r_bounds: [-90.0, 90.0] # (deg)
+radial_power: 0.3
+
+# --- data augmentation ---
+center_jitter: 50.0
+scale_bounds: [0.3, 1.0]
+rotate_augment: True
+color_augment: 1.0
+depth_dropout: 0.2
+
+train_scenes:
+  - onioncreek_2025-11-30-18-28-52
+  - onioncreek_2026-01-29-16-38-31
+  - onioncreek_teleop-00_2026-02-18-17-36-11
+  - onioncreek_teleop-01_2026-02-18-17-42-21
+  - onioncreek_teleop-02_2026-02-18-17-51-42
+  - onioncreek_teleop-03_2026-02-18-18-06-23
+
+val_scenes:
+  - onioncreek_teleop-04_2026-02-18-18-16-52

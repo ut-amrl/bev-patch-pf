@@ -1,0 +1,13 @@
+_target_: dataset.arl_jackal.ARLJackalSequence
+name: "SARA_eastwood"
+
+root: data/ARL_Jackal
+geo_tiff_path: ${.root}/ut_eastwood_park_EPSG32614_scale03_082725.tiff
+
+ground_image_resize: [512, 512]
+aerial_image_resize: [768, 768]
+
+scenes:
+  - eastwood_park-teleop-01_2026-02-19-11-50-35
+  - eastwood_park-teleop-02_2026-02-19-12-03-48
+  - eastwood_park-teleop-03_2026-02-19-12-19-58

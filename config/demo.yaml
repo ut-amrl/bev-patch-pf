@@ -1,0 +1,46 @@
+# @package _global_
+
+defaults:
+  - model: bev_patch_net
+  - sequence: sara_eastwood
+  - _self_
+
+run:
+  n_particles: 128
+  init_noise_sigma: [3.0, 3.0, 0.174]
+  # resampling params
+  n_eff_threshold: 0.3
+  resample_noise_sigma: [0.1, 0.1, 0.1]
+  # observation model params
+  aerial_image_resize: [768, 768]
+  var_ema_alpha: 0.2
+  var_temp: 0.3
+  var_gamma: 2.0
+  likelihood_temp: 1.0
+  # motion model params
+  action_gain: [1.0, 1.0, 1.0]
+  drift_gain: [1.0, 1.0, 1.0]
+
+seed: 42
+
+hf_repo_id: domlee/bev_patch_net
+hf_filename: BEV-Patch-Net_e4_3.85.pth
+hf_revision: main
+hf_model_config_filename: bev_patch_net.yaml
+
+hf_data_repo_id: domlee/bev_patch_pf_demo_data
+hf_data_revision: main
+demo_geo_tiff_name: ut_eastwood_park_EPSG32614_scale03_082725.tiff
+
+scene: eastwood_park-teleop-02_2026-02-19-12-03-48
+
+rerun:
+  app_id: bev_patch_pf_demo
+  spawn: true
+  blueprint_path: asset/bev_patch_pf_demo.rbl
+  show_features: true
+
+hydra:
+  run:
+    dir: .
+  output_subdir: null

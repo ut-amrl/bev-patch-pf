@@ -1,0 +1,34 @@
+_target_: dataset.arl_jackal.ARLJackalDataset
+name: "ARL_Jackal_eastwood"
+
+root: data/ARL_Jackal
+geo_tiff_path: ${.root}/ut_eastwood_park_EPSG32614_scale03_082725.tiff
+
+ground_image_resize: [512, 512]
+aerial_image_resize: [768, 768]
+
+# --- sampling parameters ---
+n_poses: 128
+dist_bounds: [5.0, 100.0] # (m)
+r_bounds: [-90.0, 90.0] # (deg)
+radial_power: 0.3
+
+# --- data augmentation ---
+center_jitter: 50.0
+scale_bounds: [0.3, 1.0]
+rotate_augment: True
+color_augment: 1.0
+depth_dropout: 0.2
+
+train_scenes:
+  - eastwood_2025_08_13-16_53_17
+  - eastwood_2025_08_13-17_09_38
+
+val_scenes:
+  - eastwood_2025_08_13-17_15_58
+
+test1_scenes:
+  - eastwood_test_2025_08_24-12_40_56
+
+test2_scenes:
+  - eastwood_test_2025_08_24-13_32_03

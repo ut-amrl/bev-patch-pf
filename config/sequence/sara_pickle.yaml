@@ -1,0 +1,16 @@
+_target_: dataset.arl_jackal.ARLJackalSequence
+name: "SARA_pickle"
+
+root: data/ARL_Jackal
+geo_tiff_path: ${.root}/pickle_campus_EPSG32614_scale02_121925.tiff
+
+ground_image_resize: [512, 512]
+aerial_image_resize: [768, 768]
+
+scenes:
+  - pickle-north_teleop-04_2026-02-17-17-18-07
+  - pickle-north_teleop-05_2026-02-17-17-48-47
+  - pickle-south_teleop-00_2026-02-17-15-56-49
+  - pickle-south_teleop-01_2026-02-17-16-02-20
+  - pickle-south_teleop-02_2026-02-17-16-07-02
+  - pickle-south_teleop-03_2026-02-17-16-18-19

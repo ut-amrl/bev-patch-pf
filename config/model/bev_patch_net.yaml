@@ -1,0 +1,15 @@
+_target_: model.bev_patch_net.BEVPatchNet
+name: "BEV-Patch-Net"
+
+gnd_backbone_name: "convnext_tiny.dinov3_lvd1689m"
+gnd_backbone_out_indices: [0, 1, 2, 3]
+
+aer_backbone_name: "convnext_tiny.dinov3_lvd1689m"
+aer_backbone_out_indices: [0, 1, 2]
+
+bev_shape: [224, 224]
+
+gnd_hidden_dim: 128
+aer_hidden_dims: [64, 64, 32]
+out_dim: 32
+dropout: 0.1
