@@ -76,10 +76,7 @@ The default training setup is defined in [`config/train.yaml`](config/train.yaml
 After exporting ONNX, build TensorRT engines and run the ROS 2 deployment stack from the companion repository:
 [ut-amrl/bev-patch-pf_ROS2](https://github.com/ut-amrl/bev-patch-pf_ROS2)
 
-### Export ONNX
-
 Export the model for deployment:
-
 ```bash
 python scripts/export_onnx.py --ckpt_path=/path/to/model.pth --out_dir=/path/to/export_dir
 ```
