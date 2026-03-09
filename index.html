@@ -48,8 +48,11 @@
             More Research
           </a>
           <div class="navbar-dropdown">
-            <a class="navbar-item" href="https://bev-patch-pf.github.io">
+            <a class="navbar-item" href="https://amrl.cs.utexas.edu/bev-patch-pf/">
               BEV-Patch-PF
+            </a>
+            <a class="navbar-item" href="https://amrl.cs.utexas.edu/overseec/">
+              OVerSeeC
             </a>
           </div>
         </div>
@@ -109,7 +112,8 @@
                 </span>
                 <!-- Code Link. -->
                 <span class="link-block">
-                  <a href="https://github.com/ut-amrl/bev-patch-pf" class="external-link button is-normal is-rounded is-dark">
+                  <a href="https://github.com/ut-amrl/bev-patch-pf"
+                    class="external-link button is-normal is-rounded is-dark">
                     <span class="icon">
                       <i class="fab fa-github"></i>
                     </span>
@@ -133,33 +137,45 @@
     </div>
   </section>
 
-  <section class="hero teaser">
+  <section class="section">
     <div class="container is-max-desktop">
-      <div class="hero-body">
-        <div class="columns is-centered is-vcentered">
-          <div class="column has-text-centered">
-            <img src="./static/images/pipeline.png" alt="Overall Pipeline" width="100%">
-            <h2 class="subtitle">
-              Pipeline Overview
-            </h2>
-          </div>
-          <div class="column has-text-centered">
-            <img src="./static/images/network.png" alt="Network Architecture" width="80%">
-            <h2 class="subtitle">
-              BEV-Aerial Feature Network Architecture
-            </h2>
+
+      <div class="columns is-centered">
+
+        <!-- TartanDrive2.0 -->
+        <div class="column">
+          <div class="content">
+            <h2 class="title is-3">TartanDrive2.0</h2>
+            <p>
+              Demonstration on the <strong>TartanDrive 2.0</strong> dataset using an ATV in off-road terrain.
+            </p>
+            <video id="tartandrive" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/tartandrive.mp4" type="video/mp4">
+            </video>
           </div>
         </div>
-        <h2 class="subtitle has-text-centered">
-          <strong><span class="dbpp">BEV-Patch-PF</span></strong> evaluates each particle hypothesis
-          <em>x<sub>t</sub><sup>i</sup></em>
-          by matching a patch <em>F</em>[<em>x<sub>t</sub><sup>i</sup></em>] cropped from the local aerial feature map
-          <em style="margin-right: 5px;">F</em> against the robot's bird's-eye-view (BEV) feature <em>G</em>.
-        </h2>
-        </h2>
+
+        <!-- UT-SARA-GQ -->
+        <div class="column">
+          <h2 class="title is-3">UT-SARA-GQ Dataset</h2>
+          <div class="columns is-centered">
+            <div class="column content">
+              <p>
+                Demonstration in the <strong>Grace Quarters</strong> environment with a <strong>Clearpath
+                  Warthog</strong>, handling canopy and shadows.
+              </p>
+              <video id="gq" autoplay controls muted loop playsinline height="100%">
+                <source src="./static/videos/gq.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+
       </div>
-    </div>
+
   </section>
+
+
 
   <section class="section">
     <div class="container is-max-desktop">
@@ -188,57 +204,39 @@
         </div>
       </div>
       <!--/ Abstract. -->
-
-      <!-- Paper video. -->
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
-          <h2 class="title is-3">Video</h2>
-          <div class="publication-video">
-            <iframe src="https://www.youtube.com/embed/lBh7ALKvhEM?si=A8Wh_g7EJKuVQPC7" frameborder="0"
-              allow="autoplay; encrypted-media" allowfullscreen></iframe>
-          </div>
-        </div>
-      </div>
-      <!--/ Paper video. -->
     </div>
   </section>
 
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <h2 class="title is-3 has-text-centered">Overview</h2>
+        <div class="columns is-centered is-vcentered">
+          <div class="column is-7 has-text-centered">
+            <img src="./static/images/pipeline.jpg" alt="Overall Pipeline" width="100%">
+            <h2 class="subtitle">
+              Pipeline Overview
+            </h2>
+          </div>
+          <div class="column is-5 has-text-centered">
+            <img src="./static/images/network.jpg" alt="Network Architecture" width="80%">
+            <h2 class="subtitle">
+              BEV-Aerial Feature Network Architecture
+            </h2>
+          </div>
+        </div>
+        <h2 class="subtitle has-text-centered">
+          <strong><span class="dbpp">BEV-Patch-PF</span></strong> evaluates each particle hypothesis
+          <em>x<sub>t</sub><sup>i</sup></em>
+          by matching a patch <em>F</em>[<em>x<sub>t</sub><sup>i</sup></em>] cropped from the local aerial feature map
+          <em style="margin-right: 5px;">F</em> against the robot's bird's-eye-view (BEV) feature <em>G</em>.
+        </h2>
+      </div>
+    </div>
+  </section>
 
   <section class="section">
     <div class="container is-max-desktop">
-
-      <div class="columns is-centered">
-
-        <!-- TartanDrive2.0 -->
-        <div class="column">
-          <div class="content">
-            <h2 class="title is-3">TartanDrive2.0</h2>
-            <p>
-              Demonstration on the <strong>TartanDrive 2.0</strong> dataset using an ATV in off-road terrain.
-            </p>
-            <video id="tartandrive" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/videos/tartandrive.mp4" type="video/mp4">
-            </video>
-          </div>
-        </div>
-
-        <!-- GQ -->
-        <div class="column">
-          <h2 class="title is-3">GQ Dataset</h2>
-          <div class="columns is-centered">
-            <div class="column content">
-              <p>
-                Demonstration in the <strong>Grace Quarters</strong> environment with a <strong>Clearpath
-                  Warthog</strong>, handling canopy and shadows.
-              </p>
-              <video id="gq" autoplay controls muted loop playsinline height="100%">
-                <source src="./static/videos/gq.mp4" type="video/mp4">
-              </video>
-            </div>
-          </div>
-        </div>
-
-      </div>
 
       <div class="columns is-centered">
 
@@ -296,11 +294,13 @@
   <section class="section" id="BibTeX">
     <div class="container is-max-desktop content">
       <h2 class="title">BibTeX</h2>
-      <pre><code>@article{TBD,
-  author    = {Lee, Dongmyeong and Quattrociocchi, Jesse and Ellis, Christian and Rana, Rwik and Adkins, Amanda and Uccello, Adam and Warnell, Garrett and Biswas, Joydeep},
-  title     = {BEV-Patch-PF: Particle Filtering with BEV-Aerial Feature Matching for Off-Road Geo-Localization},
-  journal   = {TBD},
-  year      = {2026},
+      <pre><code>@misc{lee2025bevpatchpf,
+  title = {BEV-Patch-PF: Particle Filtering with BEV-Aerial Feature Matching for Off-Road Geo-Localization},
+  author = {Lee, Dongmyeong and Quattrociocchi, Jesse and Ellis, Christian and Rana, Rwik and Adkins, Amanda and Uccello, Adam and Warnell, Garrett and Biswas, Joydeep},
+  year = {2025},
+  eprint = {2512.15111},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.RO}
 }</code></pre>
     </div>
   </section>
