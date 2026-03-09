@@ -26,12 +26,6 @@ conda install -y -c conda-forge manifpy
 pip install -e .
 ```
 
-Install development dependencies with:
-
-```bash
-pip install -e .[dev]
-```
-
 For multi-GPU training with `accelerate`:
 
 ```bash
