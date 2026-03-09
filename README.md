@@ -71,10 +71,6 @@ accelerate launch --multi_gpu --num_processes=<num_gpus> --mixed_precision=fp16 
 The default training setup is defined in [`config/train.yaml`](config/train.yaml). Training outputs are written under `output/train/...`.
 
 
-
-
-`export_onnx.py` exports the model components, runs `onnx.checker.check_model`, and performs parity checks against PyTorch.
-
 ## Real-Time Deployment
 
 After exporting ONNX, build TensorRT engines and run the ROS 2 deployment stack from the companion repository:
