@@ -16,7 +16,7 @@ run:
   var_ema_alpha: 0.2
   var_temp: 0.3
   var_gamma: 2.0
-  likelihood_temp: 1.0
+  likelihood_temp: 0.5
   # motion model params
   action_gain: [1.0, 1.0, 1.0]
   drift_gain: [1.0, 1.0, 1.0]
