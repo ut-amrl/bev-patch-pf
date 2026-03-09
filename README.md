@@ -52,7 +52,7 @@ Run offline particle filtering with a local checkpoint:
 python src/run_pf.py sequence=tartandrive ckpt_path=/path/to/model.pth
 ```
 
-`run_pf.py` uses Hydra overrides from [`config/run_pf.yaml`](config/run_pf.yaml) together with sequence configs under [`config/sequence`](config/sequence).
+`run_pf.py` uses [`config/run_pf.yaml`](config/run_pf.yaml) together with sequence configs under [`config/sequence`](config/sequence).
 
 ## Training
 
