@@ -26,6 +26,12 @@ conda install -y -c conda-forge manifpy
 pip install -e .
 ```
 
+Install development dependencies with:
+
+```bash
+pip install -e .[dev]
+```
+
 For multi-GPU training with `accelerate`:
 
 ```bash
@@ -52,7 +58,7 @@ Run offline particle filtering with a local checkpoint:
 python src/run_pf.py sequence=tartandrive ckpt_path=/path/to/model.pth
 ```
 
-`run_pf.py` uses [`config/run_pf.yaml`](config/run_pf.yaml) together with sequence configs under [`config/sequence`](config/sequence).
+`run_pf.py` uses Hydra overrides from [`config/run_pf.yaml`](config/run_pf.yaml) together with sequence configs under [`config/sequence`](config/sequence).
 
 ## Training
 
@@ -71,12 +77,19 @@ accelerate launch --multi_gpu --num_processes=<num_gpus> --mixed_precision=fp16 
 The default training setup is defined in [`config/train.yaml`](config/train.yaml). Training outputs are written under `output/train/...`.
 
 
+
+
+`export_onnx.py` exports the model components, runs `onnx.checker.check_model`, and performs parity checks against PyTorch.
+
 ## Real-Time Deployment
 
 After exporting ONNX, build TensorRT engines and run the ROS 2 deployment stack from the companion repository:
 [ut-amrl/bev-patch-pf_ROS2](https://github.com/ut-amrl/bev-patch-pf_ROS2)
 
+### Export ONNX
+
 Export the model for deployment:
+
 ```bash
 python scripts/export_onnx.py --ckpt_path=/path/to/model.pth --out_dir=/path/to/export_dir
 ```
