@@ -2,11 +2,12 @@ from pathlib import Path
 
 import cv2
 import numpy as np
-import pandas as pd  # noqa F401
 import torch
-from manifpy import SE2, SE3  # noqa F401
 
 from dataset.common import GeoLocDataset
+from dataset.utils import compute_se3_actions, load_csv_columns, se3_poses_from_rows
+
+FAST_LIO_POSE_COLUMNS = ("x", "y", "z", "qx", "qy", "qz", "qw")
 
 
 class AlphaTruckDataset(GeoLocDataset):
@@ -58,37 +59,10 @@ class AlphaTruckSequence(AlphaTruckDataset):
     def __init__(self, root: str, scene: str, **kwargs):
         super().__init__(root, scene, **kwargs)
 
-        # # motion updates from GT odometry
-        # odom_path = Path(root) / scene / "utm_pose.csv"
-        # odom_df = pd.read_csv(odom_path)
-        # odom_SE2 = [SE2(*xyr) for xyr in odom_df[["x", "y", "angle"]].values]
-
-        # actions = [np.zeros(3)]
-        # for i in range(1, len(odom_df)):
-        #     action = odom_SE2[i - 1].between(odom_SE2[i])
-        #     dx, dy = action.translation()
-        #     dtheta = action.angle()
-        #     actions.append(np.array([dx, dy, dtheta]))
-        # self.actions = np.array(actions)
-
         odom_path = Path(root) / scene / "fast_lio.csv"
-        odom_df = pd.read_csv(odom_path)
-        odom_SE3 = [SE3(pose) for pose in odom_df[["x", "y", "z", "qx", "qy", "qz", "qw"]].values]
-
-        actions = [np.zeros(3)]
-        for i in range(1, len(odom_SE3)):
-            # compute motion update
-            action_SE3 = odom_SE3[i - 1].between(odom_SE3[i])  # SE3
-            dx, dy, _ = action_SE3.translation()
-            dtheta = self.quat_to_yaw(action_SE3.quat())
-            actions.append(np.array([dx, dy, dtheta]))
-        self.actions = np.array(actions)
-
-    @staticmethod
-    def quat_to_yaw(quat: np.ndarray) -> float:
-        qx, qy, qz, qw = quat
-        yaw = np.arctan2(2.0 * (qw * qz + qx * qy), -1.0 + 2.0 * (qw * qw + qx * qx))
-        return yaw
+        odom_data = load_csv_columns(odom_path, FAST_LIO_POSE_COLUMNS)
+        odom_poses = se3_poses_from_rows(odom_data, camera_frame=False)
+        self.actions = compute_se3_actions(odom_poses)
 
     def __getitem__(self, idx):
         data = super().__getitem__(idx)

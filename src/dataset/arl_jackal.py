@@ -2,11 +2,13 @@ from pathlib import Path
 
 import cv2
 import numpy as np
-import pandas as pd
 import torch
-from manifpy import SE2
 
 from dataset.common import GeoLocDataset
+from dataset.utils import compute_se2_actions, load_csv_columns, load_timestamps, se2_poses_from_rows
+
+GT_POSE_COLUMNS = ("ts", "x", "y", "angle")
+ODOM_COLUMNS = ("x", "y", "angle")
 
 
 class ARLJackalDataset(GeoLocDataset):
@@ -31,16 +33,18 @@ class ARLJackalDataset(GeoLocDataset):
 
     def _load_data(self, root: Path):
         """Load ARL Jackal specific data paths."""
-        # load RGB images
         image_dir = root / self.scene / "image"
         self.image_paths = sorted([*image_dir.glob("*.jpg"), *image_dir.glob("*.jpeg"), *image_dir.glob("*.png")])
-        # load depth images
+
         depth_dir = root / self.scene / "depth"
         self.depth_paths = sorted(depth_dir.glob("*.png"))
-        # load ground truth poses (UTM coordinates)
+
         pose_file = root / self.scene / "utm_pose.csv"
-        self.poses = np.genfromtxt(pose_file, delimiter=",", skip_header=1)
-        assert len(self.image_paths) == len(self.depth_paths) == len(self.poses)
+        self.poses = load_csv_columns(pose_file, GT_POSE_COLUMNS)
+
+        assert len(self.image_paths) == len(self.depth_paths) == len(self.poses), (
+            f"{len(self.image_paths)} != {len(self.depth_paths)} != {len(self.poses)}"
+        )
 
     def _load_depth(self, depth_path: Path) -> np.ndarray:
         depth = cv2.imread(str(depth_path), cv2.IMREAD_UNCHANGED)
@@ -59,21 +63,14 @@ class ARLJackalSequence(ARLJackalDataset):
 
         # load timestamps
         timestamp_path = Path(root) / scene / "timestamps.txt"
-        self.timestamps = np.loadtxt(timestamp_path)
+        self.timestamps = load_timestamps(timestamp_path)
         assert len(self.timestamps) == len(self.image_paths), f"{len(self.timestamps)} != {len(self.image_paths)}"
 
         # motion updates from EKF Odometry
         odom_path = Path(root) / scene / "odom.csv"
-        odom_df = pd.read_csv(odom_path)
-        odom_SE2 = [SE2(*xyr) for xyr in odom_df[["x", "y", "angle"]].values]
-
-        actions = [np.zeros(3)]
-        for i in range(1, len(odom_df)):
-            action = odom_SE2[i - 1].between(odom_SE2[i])
-            dx, dy = action.translation()
-            dtheta = action.angle()
-            actions.append(np.array([dx, dy, dtheta]))
-        self.actions = np.array(actions)
+        odom_data = load_csv_columns(odom_path, ODOM_COLUMNS)
+        odom_poses = se2_poses_from_rows(odom_data)
+        self.actions = compute_se2_actions(odom_poses)
 
     def __getitem__(self, idx):
         data = super().__getitem__(idx)
