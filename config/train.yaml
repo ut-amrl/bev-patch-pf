@@ -6,7 +6,7 @@ defaults:
   - optimizer: adamw
   - scheduler: cosine_warmup
   - dataset@datasets.0: tartandrive
-  - dataset@datasets.1: gq
+  - dataset@datasets.1: ut-sara-gq
   - dataset@datasets.2: arl_jackal_eastwood
   - dataset@datasets.3: arl_jackal_ahg
   - dataset@datasets.4: arl_jackal_onioncreek
