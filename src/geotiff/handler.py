@@ -4,13 +4,16 @@ import cv2
 import numpy as np
 import rasterio
 from pyproj import CRS, Transformer
+from rasterio.enums import ColorInterp
 
 
 class GeoTiffHandler:
     def __init__(self, tiff_path: str) -> None:
         """Initialize with a GeoTIFF file"""
         with rasterio.open(tiff_path) as src:
-            self.image = np.transpose(src.read(), (1, 2, 0))
+            rgb_band_indexes = self._get_rgb_band_indexes(src)
+            image = src.read(rgb_band_indexes) if rgb_band_indexes is not None else src.read()
+            self.image = np.transpose(image, (1, 2, 0))
             self.geotransform = src.transform
             tiff_crs = src.crs
 
@@ -19,6 +22,26 @@ class GeoTiffHandler:
             self.transformer = Transformer.from_crs(src_crs, tiff_crs, always_xy=True)
         except Exception as e:
             raise ValueError(f"Failed to create transformer from EPSG:4326 to {tiff_crs}: {e}")
+
+    @staticmethod
+    def _get_rgb_band_indexes(src: rasterio.io.DatasetReader) -> list[int] | None:
+        colorinterp = tuple(src.colorinterp or ())
+        rgb_band_indexes = {}
+        for band_index, interp in enumerate(colorinterp, start=1):
+            if interp in {ColorInterp.red, ColorInterp.green, ColorInterp.blue}:
+                rgb_band_indexes[interp] = band_index
+
+        if len(rgb_band_indexes) == 3:
+            return [
+                rgb_band_indexes[ColorInterp.red],
+                rgb_band_indexes[ColorInterp.green],
+                rgb_band_indexes[ColorInterp.blue],
+            ]
+
+        if src.count in {3, 4}:
+            return [1, 2, 3]
+
+        return None
 
     @property
     def resolution(self) -> float:
