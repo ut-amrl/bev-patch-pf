@@ -59,30 +59,9 @@ def load_timestamps(path: Path) -> np.ndarray:
     return np.atleast_1d(np.loadtxt(path, dtype=np.float64))
 
 
-def se3_poses_from_rows(
-    pose_rows: np.ndarray,
-    *,
-    camera_frame: bool = False,
-    cam2enu: torch.Tensor | np.ndarray | None = None,
-) -> list[SE3]:
-    pose_rows = np.atleast_2d(np.asarray(pose_rows, dtype=np.float64))
-    if pose_rows.shape[1] != 7:
-        raise ValueError(f"Expected pose rows with 7 columns, got shape {pose_rows.shape}")
-
-    poses = [SE3(row) for row in pose_rows]
-    if not camera_frame:
-        return poses
-
-    cam2enu_matrix = _as_rigid_transform(cam2enu)
-    enu2cam_matrix = np.linalg.inv(cam2enu_matrix)
-    cam2enu_se3 = _matrix_to_se3(cam2enu_matrix)
-    enu2cam_se3 = _matrix_to_se3(enu2cam_matrix)
-    return [cam2enu_se3 * pose * enu2cam_se3 for pose in poses]
-
-
-def interpolate_se3_poses(
-    pose_timestamps: np.ndarray, poses: Sequence[SE3], target_timestamps: np.ndarray
-) -> list[SE3]:
+def interpolate_poses(
+    pose_timestamps: np.ndarray, poses: Sequence[SE3 | SE2], target_timestamps: np.ndarray
+) -> list[SE3 | SE2]:
     pose_timestamps = np.atleast_1d(np.asarray(pose_timestamps, dtype=np.float64))
     target_timestamps = np.atleast_1d(np.asarray(target_timestamps, dtype=np.float64))
     poses = list(poses)
@@ -114,6 +93,29 @@ def interpolate_se3_poses(
     return interpolated_poses
 
 
+### functions for SE(3) ###
+
+
+def se3_poses_from_rows(
+    pose_rows: np.ndarray,
+    *,
+    camera_frame: bool = False,
+    cam2enu: torch.Tensor | np.ndarray | None = None,
+) -> list[SE3]:
+    pose_rows = np.atleast_2d(np.asarray(pose_rows, dtype=np.float64))  # (x, y, z, qx, qy, qz, qw)
+    if pose_rows.shape[1] != 7:
+        raise ValueError(f"Expected pose rows with 7 columns, got shape {pose_rows.shape}")
+
+    poses = [SE3(row) for row in pose_rows]
+    if not camera_frame:
+        return poses
+
+    enu2cam = np.linalg.inv(cam2enu)
+    cam2enu_se3 = _matrix_to_se3(cam2enu)
+    enu2cam_se3 = _matrix_to_se3(enu2cam)
+    return [cam2enu_se3 * pose * enu2cam_se3 for pose in poses]
+
+
 def compute_se3_actions(poses: Sequence[SE3]) -> np.ndarray:
     poses = list(poses)
     actions = np.zeros((len(poses), 3), dtype=np.float64)
@@ -126,8 +128,18 @@ def compute_se3_actions(poses: Sequence[SE3]) -> np.ndarray:
     return actions
 
 
+def _matrix_to_se3(transform: np.ndarray) -> SE3:
+    rotation = transform[:3, :3]
+    translation = transform[:3, 3]
+    quaternion = Rotation.from_matrix(rotation).as_quat()
+    return SE3(translation, quaternion)
+
+
+### functions for SE(2) ###
+
+
 def se2_poses_from_rows(pose_rows: np.ndarray) -> list[SE2]:
-    pose_rows = np.atleast_2d(np.asarray(pose_rows, dtype=np.float64))
+    pose_rows = np.atleast_2d(np.asarray(pose_rows, dtype=np.float64))  # (x, y, angle)
     if pose_rows.shape[1] != 3:
         raise ValueError(f"Expected pose rows with 3 columns, got shape {pose_rows.shape}")
     return [SE2(*row) for row in pose_rows]
@@ -141,32 +153,3 @@ def compute_se2_actions(poses: Sequence[SE2]) -> np.ndarray:
         dx, dy = action.translation()
         actions[i] = np.array([dx, dy, action.angle()], dtype=np.float64)
     return actions
-
-
-def _as_rigid_transform(transform: torch.Tensor | np.ndarray | None) -> np.ndarray:
-    if transform is None:
-        raise ValueError("cam2enu is required when camera_frame=True")
-
-    if isinstance(transform, torch.Tensor):
-        transform = transform.detach().cpu().numpy()
-
-    transform = np.asarray(transform, dtype=np.float64)
-    if transform.shape != (4, 4):
-        raise ValueError(f"Expected a 4x4 transform, got shape {transform.shape}")
-    if not np.allclose(transform[3], np.array([0.0, 0.0, 0.0, 1.0]), atol=1e-6):
-        raise ValueError("cam2enu must be a homogeneous 4x4 transform")
-
-    rotation = transform[:3, :3]
-    if not np.allclose(rotation @ rotation.T, np.eye(3), atol=1e-5):
-        raise ValueError("cam2enu rotation must be orthonormal")
-    if not np.isclose(np.linalg.det(rotation), 1.0, atol=1e-5):
-        raise ValueError("cam2enu rotation must have determinant 1")
-
-    return transform
-
-
-def _matrix_to_se3(transform: np.ndarray) -> SE3:
-    rotation = transform[:3, :3]
-    translation = transform[:3, 3]
-    quaternion = Rotation.from_matrix(rotation).as_quat()
-    return SE3(translation, quaternion)

@@ -5,10 +5,10 @@ import numpy as np
 import torch
 
 from dataset.common import GeoLocDataset
-from dataset.utils import compute_se2_actions, load_csv_columns, load_timestamps, se2_poses_from_rows
+from dataset.utils import compute_se3_actions, interpolate_poses, load_csv_columns, load_timestamps, se3_poses_from_rows
 
 GT_POSE_COLUMNS = ("ts", "x", "y", "angle")
-ODOM_COLUMNS = ("x", "y", "angle")
+RAW_ODOM_COLUMNS = ("timestamp", "x", "y", "z", "qx", "qy", "qz", "qw")
 
 
 class ARLJackalDataset(GeoLocDataset):
@@ -67,10 +67,11 @@ class ARLJackalSequence(ARLJackalDataset):
         assert len(self.timestamps) == len(self.image_paths), f"{len(self.timestamps)} != {len(self.image_paths)}"
 
         # motion updates from EKF Odometry
-        odom_path = Path(root) / scene / "odom.csv"
-        odom_data = load_csv_columns(odom_path, ODOM_COLUMNS)
-        odom_poses = se2_poses_from_rows(odom_data)
-        self.actions = compute_se2_actions(odom_poses)
+        odom_path = Path(root) / scene / "odom_platform.csv"
+        odom_data = load_csv_columns(odom_path, RAW_ODOM_COLUMNS)
+        odom_poses = se3_poses_from_rows(odom_data[:, 1:8], camera_frame=False)
+        interpolated_poses = interpolate_poses(odom_data[:, 0], odom_poses, self.timestamps)
+        self.actions = compute_se3_actions(interpolated_poses)
 
     def __getitem__(self, idx):
         data = super().__getitem__(idx)

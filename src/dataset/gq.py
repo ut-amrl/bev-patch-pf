@@ -5,13 +5,7 @@ import numpy as np
 import torch
 
 from dataset.common import GeoLocDataset
-from dataset.utils import (
-    compute_se3_actions,
-    interpolate_se3_poses,
-    load_csv_columns,
-    load_timestamps,
-    se3_poses_from_rows,
-)
+from dataset.utils import compute_se3_actions, interpolate_poses, load_csv_columns, load_timestamps, se3_poses_from_rows
 
 GT_POSE_COLUMNS = ("timestamp", "x", "y", "angle")
 RAW_ODOM_COLUMNS = ("timestamp", "x", "y", "z", "qx", "qy", "qz", "qw")
@@ -75,14 +69,12 @@ class GQSequence(GQDataset):
         scene_dir = Path(root) / "processed" / self.scene
         timestamp_path = scene_dir / "2d_rect" / "timestamps.txt"
         self.timestamps = load_timestamps(timestamp_path)
-        assert len(self.image_paths) == len(self.depth_paths) == len(self.poses) == len(self.timestamps), (
-            f"{len(self.image_paths)} != {len(self.depth_paths)} != {len(self.poses)} != {len(self.timestamps)}"
-        )
+        assert len(self.image_paths) == len(self.timestamps), f"{len(self.image_paths)} != {len(self.timestamps)}"
 
         odom_path = scene_dir / "odom.csv"
         odom_data = load_csv_columns(odom_path, RAW_ODOM_COLUMNS)
         odom_poses = se3_poses_from_rows(odom_data[:, 1:8], camera_frame=False)
-        interpolated_poses = interpolate_se3_poses(odom_data[:, 0], odom_poses, self.timestamps)
+        interpolated_poses = interpolate_poses(odom_data[:, 0], odom_poses, self.timestamps)
         self.actions = compute_se3_actions(interpolated_poses)
 
     def __getitem__(self, idx):
