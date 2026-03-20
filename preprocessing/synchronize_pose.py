@@ -15,12 +15,13 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 REQUIRED_POSE_COLUMNS = ("timestamp", "x", "y", "angle")
-DEFAULT_TIMESTAMPS_PATTERN = "processed/{scene}/2d_rect/timestamps.txt"
-DEFAULT_POSE_PATTERN = "processed/{scene}/fast_lio_aligned.csv"
+DEFAULT_TIMESTAMPS_PATTERN = "{scene}/2d_rect/timestamps.txt"
+DEFAULT_POSE_PATTERN = "{scene}/fast_lio_aligned.csv"
 DEFAULT_OUTPUT_NAME = "utm_pose.csv"
 
 
 def _split_scene_pattern(pattern: str) -> tuple[str, str]:
+    """Split a relative path template around the required {scene} placeholder."""
     if "{scene}" not in pattern:
         raise ValueError(f"Pattern must include '{{scene}}': {pattern}")
     return pattern.split("{scene}", maxsplit=1)
@@ -34,6 +35,8 @@ def discover_scene_paths(root: Path, pattern: str) -> dict[str, Path]:
     prefix, suffix = _split_scene_pattern(pattern)
     scene_paths = {}
 
+    # The substring that replaces {scene} becomes the scene key used to pair
+    # timestamp files with pose files across the two patterns.
     for path in sorted(root.glob(pattern.replace("{scene}", "*"))):
         rel_path = path.relative_to(root).as_posix()
         if not rel_path.startswith(prefix):
@@ -100,7 +103,7 @@ def pad_pose_boundaries_for_sync(pose_df: pd.DataFrame) -> pd.DataFrame:
 ###
 
 
-def synchronize_scene(scene: str, ts_path: Path, pose_path: Path, outdir: Path, output_name: str) -> None:
+def synchronize_scene(scene: str, ts_path: Path, pose_path: Path, output_name: str) -> None:
     logger.info(f"Synchronizing pose for {scene}")
 
     image_ts = load_image_timestamps(ts_path)
@@ -122,19 +125,17 @@ def synchronize_scene(scene: str, ts_path: Path, pose_path: Path, outdir: Path, 
         synced_pose_df = synced_pose_df.loc[~remaining_nan].copy()
     kept_frames = len(synced_pose_df)
 
-    out_scene_dir = outdir / scene
-    out_scene_dir.mkdir(parents=True, exist_ok=True)
-
-    synced_pose_df.to_csv(out_scene_dir / output_name, index=False, float_format="%.6f")
+    output_path = pose_path.parent / output_name
+    synced_pose_df.to_csv(output_path, index=False, float_format="%.6f")
 
     logger.info(
         f"{scene}: image_ts={len(image_ts)} pose_rows={len(pose_df)} "
         f"clamped_before={int(before_mask.sum())} clamped_after={int(after_mask.sum())} "
-        f"kept={kept_frames} output={out_scene_dir / output_name}"
+        f"kept={kept_frames} output={output_path}"
     )
 
 
-def main(root: Path, outdir: Path, timestamps_pattern: str, pose_pattern: str, output_name: str) -> None:
+def main(root: Path, timestamps_pattern: str, pose_pattern: str, output_name: str) -> None:
     timestamp_scenes = discover_scene_paths(root, timestamps_pattern)
     aligned_pose_scenes = discover_scene_paths(root, pose_pattern)
 
@@ -144,7 +145,9 @@ def main(root: Path, outdir: Path, timestamps_pattern: str, pose_pattern: str, o
 
     missing_timestamp_scenes = sorted(set(aligned_pose_scenes) - set(timestamp_scenes))
     for scene in missing_timestamp_scenes:
-        logger.warning(f"Skipping {scene}: missing timestamps under {resolve_scene_path(root, timestamps_pattern, scene)}")
+        logger.warning(
+            f"Skipping {scene}: missing timestamps under {resolve_scene_path(root, timestamps_pattern, scene)}"
+        )
 
     scene_names = sorted(set(timestamp_scenes) & set(aligned_pose_scenes))
     if not scene_names:
@@ -157,33 +160,48 @@ def main(root: Path, outdir: Path, timestamps_pattern: str, pose_pattern: str, o
     logger.info(f"Found {len(scene_names)} scenes with timestamps and aligned pose files")
     for scene in scene_names:
         try:
-            synchronize_scene(scene, timestamp_scenes[scene], aligned_pose_scenes[scene], outdir, output_name)
+            synchronize_scene(scene, timestamp_scenes[scene], aligned_pose_scenes[scene], output_name)
         except Exception:
             logger.exception(f"Failed to synchronize pose for {scene}")
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Synchronize aligned pose CSVs to image timestamps.")
-    parser.add_argument("--root", type=str, default="data/UT-SARA-GQ")
-    parser.add_argument("--outdir", type=str, default="data/UT-SARA-GQ/processed")
+    parser = argparse.ArgumentParser(
+        description=(
+            "Synchronize aligned pose CSVs to image timestamps across multiple scenes.\n\n"
+            "A pattern is a relative path template under --root. It must include "
+            "{scene}, which is replaced by each scene folder name."
+        ),
+        epilog=(
+            "Example:\n"
+            "  --root data/UT-SARA-GQ/processed\n"
+            "  --timestamps-pattern '{scene}/2d_rect/timestamps.txt'\n"
+            "  --pose-pattern '{scene}/fast_lio_aligned.csv'\n"
+            "  scene=2024-08-13-11-28-57 resolves to:\n"
+            "    data/UT-SARA-GQ/processed/2024-08-13-11-28-57/2d_rect/timestamps.txt\n"
+            "    data/UT-SARA-GQ/processed/2024-08-13-11-28-57/fast_lio_aligned.csv"
+        ),
+        formatter_class=argparse.RawTextHelpFormatter,
+    )
+    parser.add_argument("--root", type=str, default="data/UT-SARA-GQ/processed")
     parser.add_argument(
         "--timestamps-pattern",
         type=str,
         default=DEFAULT_TIMESTAMPS_PATTERN,
-        help="Path pattern under --root for image timestamps. Must include {scene}.",
+        help="Relative path template under --root for image timestamps. Must include {scene}.",
     )
     parser.add_argument(
         "--pose-pattern",
         type=str,
         default=DEFAULT_POSE_PATTERN,
-        help="Path pattern under --root for aligned pose CSVs. Must include {scene}.",
+        help="Relative path template under --root for aligned pose CSVs. Must include {scene}.",
     )
     parser.add_argument(
         "--output-name",
         type=str,
         default=DEFAULT_OUTPUT_NAME,
-        help="Filename to write inside each output scene directory.",
+        help="Filename to write next to each resolved pose CSV.",
     )
     args = parser.parse_args()
 
-    main(Path(args.root), Path(args.outdir), args.timestamps_pattern, args.pose_pattern, args.output_name)
+    main(Path(args.root), args.timestamps_pattern, args.pose_pattern, args.output_name)
