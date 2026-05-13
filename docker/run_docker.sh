@@ -60,5 +60,5 @@ docker run -it --rm --gpus all \
   -v "${HOST_OUTPUT_DIR}:/workspace/bev-patch-pf/output:rw" \
   -v "${HOST_DATASET_DIR}:/workspace/bev-patch-pf/src/dataset:rw" \
   -v "${HOST_WANDB_DIR}:/workspace/bev-patch-pf/wandb:rw" \
-  -w /workspace/bev-patch-pf \
+  -w /workspace \
   "${IMAGE_NAME}"
