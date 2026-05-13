@@ -19,6 +19,8 @@ It combines learned bird's-eye-view (BEV) features, aerial map features, and par
 
 ## Installation
 
+### Conda
+
 ```bash
 conda create -y -n bev-patch-pf python=3.12
 conda activate bev-patch-pf
@@ -36,6 +38,18 @@ For multi-GPU training with `accelerate`:
 
 ```bash
 pip install accelerate
+```
+### Docker
+
+Starting from the `bev-patch-pf` directory, build the image:
+```bash
+cd docker && ./build_docker.sh
+```
+**Note** that if you do not have a `data` directory containing all your processed data, then you will need to create one.
+
+To run the docker container, you must tell `run_docker.sh` where the host `data` directory is located so it can mount it. Note that you can run `run_docker.sh` from anywhere:
+```bash
+./docker/run_docker.sh <your-data-dir>
 ```
 
 ## Quick Start
@@ -59,6 +73,10 @@ python src/run_pf.py sequence=tartandrive ckpt_path=/path/to/model.pth
 ```
 
 `run_pf.py` uses Hydra overrides from [`config/run_pf.yaml`](config/run_pf.yaml) together with sequence configs under [`config/sequence`](config/sequence).
+
+### Visualizing Particle Filter Evaluation
+
+You can visualize the results of the offline particle filtering with [rerun](https://github.com/rerun-io/rerun/releases) by starting rerun outside of docker (see [this](https://github.com/rerun-io/rerun/issues/6835) issue) and selecting the `pf_visualization.rrd` file from the menu. You can find the `pf_visualization.rrd` in the `bev-patch-pf/output/pf/<sequence-config-name>/BEV-Patch-Net/<model>/<scene>/` directory that is created while running offline particle filtering.
 
 ## Training
 
