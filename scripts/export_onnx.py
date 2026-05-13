@@ -16,7 +16,7 @@ from utils.misc import load_checkpoint, seed_everything
 
 H_GND, W_GND = 518, 518  # ground image resolution
 H_AER, W_AER = 768, 768  # aerial image resolution
-N_PARTICLES = 128  # number of hypotheses for aerial patch sampling
+N_PARTICLES = 64  # number of hypotheses for aerial patch sampling
 
 
 # ========== Wrappers for sub-modules ==========
@@ -49,7 +49,7 @@ def make_cuda_session(onnx_path: str):
     so = ort.SessionOptions()
     so.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
     so.log_severity_level = 3
-    return ort.InferenceSession(onnx_path, sess_options=so, providers=["CUDAExecutionProvider"])
+    return ort.InferenceSession(onnx_path, sess_options=so, providers=[("CUDAExecutionProvider", {"use_tf32": 0})])
 
 
 @torch.no_grad()
