@@ -8,10 +8,10 @@ usage() {
   echo "  $0 /path/to/your/data"
   echo
   echo "Example:"
-  echo "  $0 \$HOME/bev-patch-pf/data"
+  echo "  $0 \$HOME/data"
   echo
   echo "The provided host data directory will be mounted to:"
-  echo "  /workspace/bev-patch-pf/data"
+  echo "  /workspace/data"
   echo
 }
 
@@ -36,10 +36,11 @@ fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # paths relative to bev-patch-pf/docker
-HOST_CONFIG_DIR="${SCRIPT_DIR}/../config"
+HOST_BPP_CONFIG_DIR="${SCRIPT_DIR}/../config"
 HOST_OUTPUT_DIR="${SCRIPT_DIR}/../output"
 HOST_DATASET_DIR="${SCRIPT_DIR}/../src/dataset"
 HOST_WANDB_DIR="${SCRIPT_DIR}/../wandb"
+HOST_RBK_CONFIG_DIR="${SCRIPT_DIR}/../config"
 
 xhost +local:docker
 # Make sure xhost privilege gets revoked
@@ -55,10 +56,11 @@ docker run -it --rm --gpus all \
   -e DISPLAY="${DISPLAY}" \
   -e QT_X11_NO_MITSHM=1 \
   -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
-  -v "${HOST_DATA_DIR}:/workspace/bev-patch-pf/data:rw" \
-  -v "${HOST_CONFIG_DIR}:/workspace/bev-patch-pf/config:rw" \
+  -v "${HOST_DATA_DIR}:/workspace/data:rw" \
+  -v "${HOST_BPP_CONFIG_DIR}:/workspace/bev-patch-pf/config:rw" \
   -v "${HOST_OUTPUT_DIR}:/workspace/bev-patch-pf/output:rw" \
   -v "${HOST_DATASET_DIR}:/workspace/bev-patch-pf/src/dataset:rw" \
   -v "${HOST_WANDB_DIR}:/workspace/bev-patch-pf/wandb:rw" \
+  -v "${HOST_RBK_CONFIG_DIR}:/workspace/rosbagkit/config:rw" \
   -w /workspace \
   "${IMAGE_NAME}"

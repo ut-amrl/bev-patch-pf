@@ -94,8 +94,17 @@ RUN pip install --no-cache-dir accelerate
 # for some reason `onnxscript` does not get installed with the other onnx dependencies
 RUN pip install --no-cache-dir onnxscript
 
-# Make data direcotry
-RUN mkdir -p /workspace/bev-patch-pf/data \
+# Clone rosbagkit repo.
+ARG ROSBAGKIT_REPO=https://github.com/ut-amrl/rosbagkit.git
+ARG ROSBAGKIT_COMMIT=main
+RUN git clone "${ROSBAGKIT_REPO}" /workspace/rosbagkit \
+&& cd /workspace/rosbagkit \
+&& git checkout "${ROSBAGKIT_COMMIT}"
+
+RUN pip install --no-cache-dir /workspace/rosbagkit
+
+# External data mount point.
+RUN mkdir -p /workspace/data \
     && chown -R "${USER_UID}:${USER_GID}" /workspace
 
 # Sanity-check imports at build time.
