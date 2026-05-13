@@ -91,6 +91,9 @@ RUN pip install --no-cache-dir /workspace/bev-patch-pf
 # multi gpu capable
 RUN pip install --no-cache-dir accelerate
 
+# for some reason `onnxscript` does not get installed with the other onnx dependencies
+RUN pip install --no-cache-dir onnxscript
+
 # Make data direcotry
 RUN mkdir -p /workspace/bev-patch-pf/data \
     && chown -R "${USER_UID}:${USER_GID}" /workspace
