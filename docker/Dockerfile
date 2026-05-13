@@ -86,10 +86,9 @@ RUN git clone "${BEV_PATCH_PF_REPO}" /workspace/bev-patch-pf \
     && cd /workspace/bev-patch-pf \
     && git checkout "${BEV_PATCH_PF_COMMIT}"
 
-RUN pip install /workspace/bev-patch-pf
-# RUN pip install --no-cache-dir /workspace/bev-patch-pf
+RUN pip install --no-cache-dir /workspace/bev-patch-pf
 
-# multi gpu capable. why does this not work when it's inside the project.toml?
+# multi gpu capable
 RUN pip install --no-cache-dir accelerate
 
 # Make data direcotry
