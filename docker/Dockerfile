@@ -8,6 +8,7 @@ ENV PATH=/opt/conda/envs/bev-patch-pf/bin:/opt/conda/bin:$PATH
 # - libgl1/libglib2.0-0 are commonly needed by opencv-python
 # - bash/ca-certificates: convenience and HTTPS certs
 # - vim/nano included for editing yaml files
+# - libgtk-3-dev/libxkbcommon-x11-0/vulkan-tools for rerun
 RUN apt-get update && apt-get install -y --no-install-recommends \
     bash \
     ca-certificates \
@@ -22,6 +23,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxext6 \
     libsm6 \
     libxrender1 \
+    libgtk-3-dev \
+    libxkbcommon-x11-0 \
+    vulkan-tools \
     && rm -rf /var/lib/apt/lists/*
 
 ARG USERNAME=bpp
@@ -75,18 +79,18 @@ RUN micromamba create -y -n bev-patch-pf -c conda-forge \
 # Make future RUN commands use the environment.
 SHELL ["micromamba", "run", "-n", "bev-patch-pf", "/bin/bash", "-c"]
 
-WORKDIR /workspace
+WORKDIR /home/bpp
 
 RUN pip install --no-cache-dir --upgrade pip setuptools wheel
 
 # Clone bev-patch-pf repo.
 ARG BEV_PATCH_PF_REPO=https://github.com/ut-amrl/bev-patch-pf.git
 ARG BEV_PATCH_PF_COMMIT=main
-RUN git clone "${BEV_PATCH_PF_REPO}" /workspace/bev-patch-pf \
-    && cd /workspace/bev-patch-pf \
+RUN git clone "${BEV_PATCH_PF_REPO}" /home/bpp/bev-patch-pf \
+    && cd /home/bpp/bev-patch-pf \
     && git checkout "${BEV_PATCH_PF_COMMIT}"
 
-RUN pip install --no-cache-dir /workspace/bev-patch-pf
+RUN pip install --no-cache-dir /home/bpp/bev-patch-pf
 
 # multi gpu capable
 RUN pip install --no-cache-dir accelerate
@@ -97,22 +101,22 @@ RUN pip install --no-cache-dir onnxscript
 # Clone rosbagkit repo.
 ARG ROSBAGKIT_REPO=https://github.com/ut-amrl/rosbagkit.git
 ARG ROSBAGKIT_COMMIT=main
-RUN git clone "${ROSBAGKIT_REPO}" /workspace/rosbagkit \
-&& cd /workspace/rosbagkit \
+RUN git clone "${ROSBAGKIT_REPO}" /home/bpp/rosbagkit \
+&& cd /home/bpp/rosbagkit \
 && git checkout "${ROSBAGKIT_COMMIT}"
 
-RUN pip install --no-cache-dir /workspace/rosbagkit
-
-# External data mount point.
-RUN mkdir -p /workspace/data \
-    && chown -R "${USER_UID}:${USER_GID}" /workspace
+RUN pip install --no-cache-dir /home/bpp/rosbagkit
 
 # Install rerun
-RUN apt-get update && apt-get install -y libgtk-3-dev libxkbcommon-x11-0 vulkan-tools
 RUN pip install --no-cache-dir rerun-sdk==0.31.4
 
+RUN mkdir -p /home/bpp/data \
+    && mkdir -p /home/bpp/.config \
+    && mkdir -p /home/bpp/.local \
+    && chown -R "${USER_UID}:${USER_GID}" /home/bpp
+
 # Sanity-check imports at build time.
-WORKDIR /workspace/bev-patch-pf
+WORKDIR /home/bpp/bev-patch-pf
 
 RUN python - <<'EOF'
 import numpy
