@@ -107,6 +107,10 @@ RUN pip install --no-cache-dir /workspace/rosbagkit
 RUN mkdir -p /workspace/data \
     && chown -R "${USER_UID}:${USER_GID}" /workspace
 
+# Install rerun
+RUN apt-get update && apt-get install -y libgtk-3-dev libxkbcommon-x11-0 vulkan-tools
+RUN pip install --no-cache-dir rerun-sdk==0.31.4
+
 # Sanity-check imports at build time.
 WORKDIR /workspace/bev-patch-pf
 

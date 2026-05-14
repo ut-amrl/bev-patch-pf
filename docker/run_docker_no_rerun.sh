@@ -41,7 +41,6 @@ HOST_OUTPUT_DIR="${SCRIPT_DIR}/../output"
 HOST_DATASET_DIR="${SCRIPT_DIR}/../src/dataset"
 HOST_WANDB_DIR="${SCRIPT_DIR}/../wandb"
 HOST_RBK_CONFIG_DIR="${SCRIPT_DIR}/../config"
-DOCKER_USER_DIR="${SCRIPT_DIR}/.docker"
 
 xhost +local:docker
 # Make sure xhost privilege gets revoked
@@ -50,29 +49,19 @@ cleanup() {
 }
 trap cleanup EXIT
 
-XSOCK=/tmp/.X11-unix
-XAUTH=/tmp/.docker.xauth
-xauth nlist $DISPLAY | sed -e 's/^..../ffff/' | xauth -f $XAUTH nmerge -
-chmod 777 $XAUTH
-
+# --ipc=host added to give container all shared memory since training uses a lot of memory
+# Add --net=host if problems with wandb
 docker run -it --rm --gpus all \
-  --runtime=nvidia \
-  --privileged \
-  --network=host \
   --ipc=host \
   -e DISPLAY="${DISPLAY}" \
   -e QT_X11_NO_MITSHM=1 \
-  -e NVIDIA_DRIVER_CAPABILITIES=all \
-  -v $XSOCK:$XSOCK \
-  -v $XAUTH:$XAUTH \
-  -e XAUTHORITY=$XAUTH \
+  -v /tmp/.X11-unix:/tmp/.X11-unix \
   -v "${HOST_DATA_DIR}:/workspace/data" \
   -v "${HOST_BPP_CONFIG_DIR}:/workspace/bev-patch-pf/config" \
   -v "${HOST_OUTPUT_DIR}:/workspace/bev-patch-pf/output" \
   -v "${HOST_DATASET_DIR}:/workspace/bev-patch-pf/src/dataset" \
   -v "${HOST_WANDB_DIR}:/workspace/bev-patch-pf/wandb" \
   -v "${HOST_RBK_CONFIG_DIR}:/workspace/rosbagkit/config" \
-  -v "${DOCKER_USER_DIR}:/home/bpp" \
   -w /workspace \
-  --name bpp-training \
+  --name bpp-training-no-rerun \
   "${IMAGE_NAME}"
