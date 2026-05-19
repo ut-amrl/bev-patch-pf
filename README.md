@@ -43,11 +43,11 @@ pip install accelerate
 
 Starting from the `bev-patch-pf` directory, build the image:
 ```bash
-cd docker && ./build_docker.sh
+./docker/build_docker.sh
 ```
-**Note** that if you do not have a `data` directory containing all your processed data, then you will need to create one.
+**Note** that if you do not have a `data` directory containing all your processed data, then you will need to create one. You can also execute the build and run commands from anywhere.
 
-To run the docker container, you must tell `run_docker.sh` where the host `data` directory is located so it can mount it. Note that you can run `run_docker.sh` from anywhere:
+To run the docker container, you must tell `run_docker.sh` where the host `data` directory is located so it can mount it:
 ```bash
 ./docker/run_docker.sh <your-data-dir>
 ```
