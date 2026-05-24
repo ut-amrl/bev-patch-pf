@@ -5,7 +5,7 @@ import numpy as np
 import torch
 
 from dataset.common import GeoLocDataset
-from dataset.utils import compute_se3_actions, load_csv_columns, se3_poses_from_rows
+from dataset.utils import compute_se3_actions, interpolate_poses, load_csv_columns, se3_poses_from_rows
 
 FAST_LIO_POSE_COLUMNS = ("x", "y", "z", "qx", "qy", "qz", "qw")
 # SUPERODOM_POSE_COLUMNS = ("timestamp", "x", "y", "z", "qx", "qy", "qz", "qw")
@@ -63,6 +63,7 @@ class AlphaTruckSequence(AlphaTruckDataset):
         odom_path = Path(root) / scene / "superodom_lio.csv"
         odom_data = load_csv_columns(odom_path, FAST_LIO_POSE_COLUMNS)
         odom_poses = se3_poses_from_rows(odom_data, camera_frame=False)
+        interpolated_poses = interpolate_poses(odom_data[:, 0], odom_poses, self.timestamps)
         self.actions = compute_se3_actions(odom_poses)
 
     def __getitem__(self, idx):
