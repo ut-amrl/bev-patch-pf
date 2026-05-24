@@ -1,0 +1,11 @@
+_target_: dataset.alphatruck.AlphaTruckSequence
+name: "HCFS-Third"
+
+root: /home/bpp/data/HCFS/processed/full-trajectories
+geo_tiff_path: ${.root}/third_trail_loop.tif
+
+ground_image_resize: [512, 512]
+aerial_image_resize: [768, 768]
+
+scenes:
+  - third_trail_loop
