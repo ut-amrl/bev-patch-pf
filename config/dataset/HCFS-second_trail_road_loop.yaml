@@ -21,8 +21,19 @@ color_augment: 1.0
 depth_dropout: 0.2
 
 train_scenes:
-  - AHG_Speedway
-  - Speedway_AHG
+  - second_trail_road_loop1
+  - second_trail_road_loop2
+  - second_trail_road_loop3
+  - second_trail_road_loop4
+  - second_trail_road_loop5
+  - second_trail_road_loop6
+  - second_trail_road_loop7
+  - second_trail_road_loop8
+  - second_trail_road_loop9
+  - second_trail_road_loop10
+  - second_trail_road_loop11
+  - second_trail_road_loop12
+  - second_trail_road_loop13
 
 val_scenes:
-  - Speedway_AHG
+  - second_trail_road_loop4
