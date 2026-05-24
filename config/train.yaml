@@ -5,22 +5,18 @@ defaults:
   - criterion: geoloc
   - optimizer: adamw
   - scheduler: cosine_warmup
-  - dataset@datasets.0: tartandrive
-  - dataset@datasets.1: ut-sara-gq
-  - dataset@datasets.2: arl_jackal_eastwood
-  - dataset@datasets.3: arl_jackal_ahg
-  - dataset@datasets.4: arl_jackal_onioncreek
-  - dataset@datasets.5: arl_jackal_pickle
+  - dataset@datasets.0: HCFS-second_trail_road_loop
+  - dataset@datasets.1: HCFS-third_trail_loop
   - _self_
 
-dataset_name: TartanDrive2_GQ_Jackal
+dataset_name: HCFS-May
 output_dir: ./output/train/${dataset_name}/${model.name}/${now:%Y%m%d_%H%M%S}
 hydra:
   run:
     dir: ${output_dir}
 
 # --- training parameters ---
-epochs: 5
+epochs: 7
 batch_size: 4
 train_n_poses: 64
 clip_grad_norm: 1.0
@@ -34,7 +30,7 @@ visualize_every_n_steps_eval: 100
 
 # --- misc ---
 seed: 42
-ckpt_path: null
+ckpt_path: config/BEV-Patch-Net_e4_3.85.pth
 wandb: True
 
 device: cuda
