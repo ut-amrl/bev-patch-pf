@@ -1,0 +1,37 @@
+# @package _global_
+
+defaults:
+  - model: bev_patch_net
+  - criterion: geoloc
+  - optimizer: adamw
+  - scheduler: cosine_warmup
+  - dataset@datasets.0: HCFS-second_trail_road_loop
+  - dataset@datasets.1: HCFS-third_trail_loop
+  - _self_
+
+dataset_name: HCFS-May
+output_dir: ./output/train/${dataset_name}/${model.name}/${now:%Y%m%d_%H%M%S}
+hydra:
+  run:
+    dir: ${output_dir}
+
+# --- training parameters ---
+epochs: 7
+batch_size: 4
+train_n_poses: 64
+clip_grad_norm: 1.0
+max_steps: 5000
+
+# --- validation parameters ---
+val_n_poses: 128
+max_frames_per_val_scene: 500
+visualize_every_n_steps_train: 500
+visualize_every_n_steps_eval: 100
+
+# --- misc ---
+seed: 42
+ckpt_path: config/BEV-Patch-Net_e4_3.85.pth
+wandb: True
+
+device: cuda
+amp: True

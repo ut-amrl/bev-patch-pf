@@ -8,13 +8,14 @@ from dataset.common import GeoLocDataset
 from dataset.utils import compute_se3_actions, load_csv_columns, se3_poses_from_rows
 
 FAST_LIO_POSE_COLUMNS = ("x", "y", "z", "qx", "qy", "qz", "qw")
+# SUPERODOM_POSE_COLUMNS = ("timestamp", "x", "y", "z", "qx", "qy", "qz", "qw")
 
 
 class AlphaTruckDataset(GeoLocDataset):
     INTRINSIC = torch.tensor(
         [
-            [646.88623046875, 0.0, 634.9051513671875],
-            [0.0, 646.12158203125, 364.38299560546875],
+            [388.64874267578125, 0.0, 316.8682861328125],
+            [0.0, 388.0560302734375, 244.55877685546875],
             [0.0, 0.0, 1.0],
         ],
         dtype=torch.float32,
@@ -28,11 +29,11 @@ class AlphaTruckDataset(GeoLocDataset):
         ],
         dtype=torch.float32,
     )
-    IMAGE_SIZE = (720, 1280)  # H, W
+    IMAGE_SIZE = (480, 640)  # H, W
 
     def _load_data(self, root: Path):
-        """Load ARL Jackal specific data paths."""
-        image_dir = root / self.scene / "image"
+        """Load data paths."""
+        image_dir = root / self.scene / "image_raw"
         self.image_paths = sorted(image_dir.glob("*.png"))
 
         depth_dir = root / self.scene / "depth"
@@ -59,7 +60,7 @@ class AlphaTruckSequence(AlphaTruckDataset):
     def __init__(self, root: str, scene: str, **kwargs):
         super().__init__(root, scene, **kwargs)
 
-        odom_path = Path(root) / scene / "fast_lio.csv"
+        odom_path = Path(root) / scene / "superodom_lio.csv"
         odom_data = load_csv_columns(odom_path, FAST_LIO_POSE_COLUMNS)
         odom_poses = se3_poses_from_rows(odom_data, camera_frame=False)
         self.actions = compute_se3_actions(odom_poses)
