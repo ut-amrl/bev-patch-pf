@@ -113,6 +113,8 @@ RUN pip install --no-cache-dir rerun-sdk==0.31.4
 RUN mkdir -p /home/bpp/data \
     && mkdir -p /home/bpp/.config \
     && mkdir -p /home/bpp/.local \
+    && mkdir -p /home/bpp/bev-patch-pf/output \
+    && mkdir -p /home/bpp/bev-patch-pf/wandb \
     && chown -R "${USER_UID}:${USER_GID}" /home/bpp
 
 # Sanity-check imports at build time.
