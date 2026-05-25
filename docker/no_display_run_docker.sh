@@ -42,20 +42,12 @@ HOST_DATASET_DIR="${SCRIPT_DIR}/../src/dataset"
 HOST_WANDB_DIR="${SCRIPT_DIR}/../wandb"
 HOST_RBK_CONFIG_DIR="${SCRIPT_DIR}/../config"
 
-xhost +local:docker
-# Make sure xhost privilege gets revoked
-cleanup() {
-  xhost -local:docker >/dev/null 2>&1 || true
-}
-trap cleanup EXIT
 
 # --ipc=host added to give container all shared memory since training uses a lot of memory
 # Add --net=host if problems with wandb
 docker run -it --rm --gpus all \
   --ipc=host \
-  -e DISPLAY="${DISPLAY}" \
   -e QT_X11_NO_MITSHM=1 \
-  -v /tmp/.X11-unix:/tmp/.X11-unix \
   -v "${HOST_DATA_DIR}:/workspace/data" \
   -v "${HOST_BPP_CONFIG_DIR}:/workspace/bev-patch-pf/config" \
   -v "${HOST_OUTPUT_DIR}:/workspace/bev-patch-pf/output" \
