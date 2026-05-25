@@ -10,7 +10,7 @@ USER_GID="$(id -g)"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-OUTPUT_DIR="${SCRIPT_DIR}/../ouput"
+OUTPUT_DIR="${SCRIPT_DIR}/../output"
 WANDB_DIR="${SCRIPT_DIR}/../wandb"
 
 if [ ! -d "${OUTPUT_DIR}" ]; then
