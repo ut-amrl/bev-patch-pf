@@ -9,6 +9,14 @@ USER_UID="$(id -u)"
 USER_GID="$(id -g)"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ ! -d "$SCRIPT_DIR" ]; then
+  mkdir -p "${SCRIPT_DIR}/../ouput"
+  echo " ${SCRIPT_DIR}/../ouput created"
+fi
+if [ ! -d "$SCRIPT_DIR" ]; then
+  mkdir -p "${SCRIPT_DIR}/../wandb"
+  echo " ${SCRIPT_DIR}/../wandb created"
+fi
 
 docker build \
     --build-arg USER_UID="${USER_UID}" \
