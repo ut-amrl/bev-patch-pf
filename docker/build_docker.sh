@@ -9,13 +9,17 @@ USER_UID="$(id -u)"
 USER_GID="$(id -g)"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-if [ ! -d "$SCRIPT_DIR" ]; then
-  mkdir -p "${SCRIPT_DIR}/../ouput"
-  echo " ${SCRIPT_DIR}/../ouput created"
+
+OUTPUT_DIR="${SCRIPT_DIR}/../ouput"
+WANDB_DIR="${SCRIPT_DIR}/../wandb"
+
+if [ ! -d "${OUTPUT_DIR}" ]; then
+  mkdir -p "${OUTPUT_DIR}"
+  echo " ${OUTPUT_DIR} created"
 fi
-if [ ! -d "$SCRIPT_DIR" ]; then
-  mkdir -p "${SCRIPT_DIR}/../wandb"
-  echo " ${SCRIPT_DIR}/../wandb created"
+if [ ! -d "${WANDB_DIR}" ]; then
+  mkdir -p "${WANDB_DIR}"
+  echo " ${WANDB_DIR} created"
 fi
 
 docker build \
