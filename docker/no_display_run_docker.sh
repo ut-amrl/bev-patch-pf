@@ -48,12 +48,12 @@ HOST_RBK_CONFIG_DIR="${SCRIPT_DIR}/../config"
 docker run -it --rm --gpus all \
   --ipc=host \
   -e QT_X11_NO_MITSHM=1 \
-  -v "${HOST_DATA_DIR}:/workspace/data" \
-  -v "${HOST_BPP_CONFIG_DIR}:/workspace/bev-patch-pf/config" \
-  -v "${HOST_OUTPUT_DIR}:/workspace/bev-patch-pf/output" \
-  -v "${HOST_DATASET_DIR}:/workspace/bev-patch-pf/src/dataset" \
-  -v "${HOST_WANDB_DIR}:/workspace/bev-patch-pf/wandb" \
-  -v "${HOST_RBK_CONFIG_DIR}:/workspace/rosbagkit/config" \
-  -w /workspace \
-  --name bpp-training-no-rerun \
+  -v "${HOST_DATA_DIR}:/home/bpp/data" \
+  -v "${HOST_BPP_CONFIG_DIR}:/home/bpp/bev-patch-pf/config" \
+  -v "${HOST_OUTPUT_DIR}:/home/bpp/bev-patch-pf/output" \
+  -v "${HOST_DATASET_DIR}:/home/bpp/bev-patch-pf/src/dataset" \
+  -v "${HOST_WANDB_DIR}:/home/bpp/bev-patch-pf/wandb" \
+  -v "${HOST_RBK_CONFIG_DIR}:/home/bpp/rosbagkit/config" \
+  -w /home/bpp \
+  --name bpp-training \
   "${IMAGE_NAME}"
