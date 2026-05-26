@@ -4,7 +4,7 @@
 
 **Particle Filtering with BEV-Aerial Feature Matching for Off-Road Geo-Localization**
 
-[Project Page](https://amrl.cs.utexas.edu/bev-patch-pf) • [Paper (arXiv)](https://arxiv.org/abs/2512.15111) • [ROS 2 Deployment](https://github.com/ut-amrl/bev-patch-pf_ROS2)
+[Project Page](https://amrl.cs.utexas.edu/bev-patch-pf) • [Paper (arXiv)](https://arxiv.org/abs/2512.15111) • [Data](https://web.corral.tacc.utexas.edu/texasrobotics/web_UT-SARA-GQ) • [ROS 2 Deployment](https://github.com/ut-amrl/bev-patch-pf_ROS2)
 
 </div>
 
@@ -16,7 +16,6 @@ BEV-Patch-PF is a GPS-free geo-localization system for long-horizon offroad loca
 It combines learned bird's-eye-view (BEV) features, aerial map features, and particle filtering to estimate robot pose over time.
 
 
-
 ## Installation
 
 ### Conda
@@ -26,12 +25,6 @@ conda create -y -n bev-patch-pf python=3.12
 conda activate bev-patch-pf
 conda install -y -c conda-forge manifpy
 pip install -e .
-```
-
-Install development dependencies with:
-
-```bash
-pip install -e .[dev]
 ```
 
 For multi-GPU training with `accelerate`:
@@ -54,8 +47,6 @@ To run the docker container, you must tell `run_docker.sh` where the host `data`
 
 ## Quick Start
 
-### Demo
-
 The demo downloads a pinned checkpoint and a pinned sparse demo dataset from Hugging Face, then launches Rerun with the demo blueprint.
 
 ```bash
@@ -64,15 +55,6 @@ python src/run_demo.py
 
 The demo configuration is defined in [`config/demo.yaml`](config/demo.yaml).
 
-### Particle Filter Evaluation
-
-Run offline particle filtering with a local checkpoint:
-
-```bash
-python src/run_pf.py sequence=tartandrive ckpt_path=/path/to/model.pth
-```
-
-`run_pf.py` uses Hydra overrides from [`config/run_pf.yaml`](config/run_pf.yaml) together with sequence configs under [`config/sequence`](config/sequence).
 
 ### Visualizing Particle Filter Evaluation
 
@@ -95,9 +77,16 @@ accelerate launch --multi_gpu --num_processes=<num_gpus> --mixed_precision=fp16 
 The default training setup is defined in [`config/train.yaml`](config/train.yaml). Training outputs are written under `output/train/...`.
 
 
+## Particle Filter Evaluation
 
+Run offline particle filtering with a local checkpoint:
 
-`export_onnx.py` exports the model components, runs `onnx.checker.check_model`, and performs parity checks against PyTorch.
+```bash
+python src/run_pf.py sequence=tartandrive ckpt_path=/path/to/model.pth
+```
+
+`run_pf.py` uses Hydra overrides from [`config/run_pf.yaml`](config/run_pf.yaml) together with sequence configs under [`config/sequence`](config/sequence).
+
 
 ## Real-Time Deployment
 

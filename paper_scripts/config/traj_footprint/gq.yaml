@@ -1,0 +1,74 @@
+root: data/GQ
+geotiff: ${root}/GQ_EPSG32618_scale03_091025.tiff
+
+pose:
+  default_file: gt_odom.csv
+  delimiter: ","
+  skip_header: 1
+  has_header: true
+  x_col: x
+  y_col: y
+  scene_pose_files: {}
+
+groups:
+  train:
+    label: Train
+    color: "#0072B0"
+    linewidth: 4
+    alpha: 0.8
+    offset_px: [0, 0]
+    scenes:
+      - 2024-08-12-17-41-07
+      - 2024-08-13-11-37-53
+      - 2024-08-13-16-36-24
+      - 2024-08-13-16-41-44
+      - 2024-08-13-16-45-06
+      - 2024-08-13-17-07-31
+      - 2024-08-13-17-14-03
+      - 2024-08-15-12-53-53
+      - 2024-08-15-12-56-35
+
+  val:
+    label: Validation
+    color: "#009E70"
+    linewidth: 4
+    alpha: 0.8
+    offset_px: [0, 0]
+    scenes:
+      - 2024-08-13-11-59-52
+      - 2024-08-15-13-08-57
+
+  test_intra:
+    label: Test (Seen Route)
+    color: "#E69F00"
+    linewidth: 4
+    alpha: 0.8
+    offset_px: [0, 0]
+    scenes:
+      - 2024-08-13-11-28-57
+      - 2024-08-13-16-48-47
+      - 2024-08-15-13-23-03
+
+  test_cross:
+    label: Test (Unseen Route)
+    color: "#D55E00"
+    linewidth: 4
+    alpha: 0.8
+    offset_px: [0, 0]
+    scenes:
+      - 2024-08-13-16-56-52
+      - 2024-08-15-12-40-46
+      - 2024-08-15-13-08-57
+
+viz:
+  figure_size: [20, 20]
+  map_alpha: 0.5
+  padding_px: 80
+  legend_loc: upper left
+  scale_bar_m: 100
+  scale_bar_font_size: 24
+  dpi: 120
+  hide_axes: true
+
+output:
+  path: paper_scripts/figure/footprint/gq_split.png

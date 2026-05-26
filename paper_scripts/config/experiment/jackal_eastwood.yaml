@@ -1,0 +1,41 @@
+experiment_name: "jackal_eastwood"
+
+dataset:
+  name: ARL_Jackal
+  geotiff: data/ARL_Jackal/ut_eastwood_park_EPSG32614_scale03_082725.tiff
+  scenes:
+    test:
+      - eastwood_test_2025_08_24-12_40_56
+      - eastwood_test_2025_08_24-13_32_03
+
+methods:
+  - name: Ground Truth
+    base_path: data_raw/ARL_Jackal
+    traj_file: "{scene}/fast_lio_aligned.csv"
+    format: t_xyr
+    color: black
+    reference: true
+
+  - name: Ours
+    color: blue
+    base_path: data_raw/ARL_Jackal
+    traj_file: "{scene}/bev_patch_pf_odom.csv"
+    format: t_xyz_qxyzw
+    frame: enu
+
+  - name: Wheel Odometry
+    base_path: data_raw/ARL_Jackal
+    traj_file: "{scene}/odom_platform.csv"
+    format: t_xyz_qxyzw
+    color: darkgreen
+    odom: true
+    frame: enu
+
+  - name: GPS
+    base_path: data_raw/ARL_Jackal
+    traj_file: "{scene}/gps.csv"
+    format: t_gps
+    color: firebrick
+
+viz:
+  alpha: 0.5

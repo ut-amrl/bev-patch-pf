@@ -1,0 +1,48 @@
+experiment_name: "SARA_autonomy_pickle"
+
+dataset:
+  name: ARL_SARA
+  geotiff: data/ARL_Jackal/pickle_campus_EPSG32614_scale03_121925.tiff
+  scenes:
+    test:
+      - pickle-north_autonomy-01_2026-02-17-10-28-53
+      - pickle-north_autonomy-02_2026-02-17-10-37-57
+      - pickle-north_autonomy-03_2026-02-17-10-43-26
+      - pickle-south_autonomy-02_2026-02-17-08-44-34
+      - pickle-south_autonomy-03_2026-02-17-08-55-42
+      - pickle-south_autonomy-04_2026-02-17-09-16-03
+
+methods:
+  - name: Ground Truth
+    base_path: data_raw/ARL_Jackal/extracted
+    traj_file: "{scene}/adaptive_lio_aligned_clean.csv"
+    format: t_xyr
+    color: black
+    reference: true
+
+  - name: Wheel Odometry
+    base_path: data_raw/ARL_Jackal/extracted
+    traj_file: "{scene}/odom_platform.csv"
+    format: t_xyz_qxyzw
+    color: darkgreen
+    odom: true
+    frame: enu
+
+  - name: GPS
+    base_path: data_raw/ARL_Jackal/extracted
+    traj_file: "{scene}/gps.csv"
+    format: t_gps
+    color: firebrick
+
+  - name: BEV-Patch-PF
+    base_path: data_raw/ARL_Jackal/extracted
+    traj_file: "{scene}/bev_patch_pf_clean.csv"
+    format: t_xyz_qxyzw
+    frame: enu
+    color: blue
+
+viz:
+  alpha: 0.5
+  legend:
+    show: false
+    fontsize: 50

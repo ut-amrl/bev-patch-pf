@@ -1,0 +1,45 @@
+experiment_name: "SARA_teleop_eastwood"
+
+dataset:
+  name: ARL_SARA
+  geotiff: data/ARL_Jackal/ut_eastwood_park_EPSG32614_scale03_082725.tiff
+  scenes:
+    test:
+      - eastwood_park-teleop-01_2026-02-19-11-50-35
+      - eastwood_park-teleop-02_2026-02-19-12-03-48
+      - eastwood_park-teleop-03_2026-02-19-12-19-58
+
+methods:
+  - name: Ground Truth
+    base_path: data_raw/ARL_Jackal/extracted
+    traj_file: "{scene}/adaptive_lio_aligned.csv"
+    format: t_xyr
+    color: black
+    reference: true
+
+  - name: Wheel Odometry
+    base_path: data_raw/ARL_Jackal/extracted
+    traj_file: "{scene}/odom_platform.csv"
+    format: t_xyz_qxyzw
+    color: darkgreen
+    odom: true
+    frame: enu
+
+  - name: GPS
+    base_path: data_raw/ARL_Jackal/extracted
+    traj_file: "{scene}/gps.csv"
+    format: t_gps
+    color: firebrick
+
+  - name: BEV-Patch-PF
+    base_path: output/pf/SARA_eastwood/BEV-Patch-Net/BEV-Patch-Net_e0_3.58
+    traj_file: "{scene}/pf_traj.csv"
+    format: t_xyr
+    frame: enu
+    color: blue
+
+viz:
+  alpha: 0.5
+  legend:
+    show: false
+    fontsize: 50
