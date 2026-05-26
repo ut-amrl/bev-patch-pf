@@ -1,0 +1,77 @@
+geotiff: data/ARL_Jackal/onioncreek_EPSG32614_scale02_022726.tiff
+
+viz:
+  alpha: 0.6
+  padding_px: 80
+  linewidth: 5
+  legend:
+    show: false
+    mode: grouped
+    fontsize: 40
+    line_gap_fraction: 0.8
+    group_label_spacing: 0.8
+    group_handle_height: 0.8
+    groups:
+      - label: Baseline
+        members: ["Baseline 01", "Baseline 02", "Baseline 03"]
+      - label: UT-SARA
+        members: ["SARA system 01", "SARA system 02", "SARA system 03"]
+      - label: Human Drawn
+        members: ["Human Drawn"]
+
+figures:
+  - output:
+      path: paper_scripts/figure/sara_onioncreek_human_only.png
+    trajectories: ["Human Drawn"]
+
+  - output:
+      path: paper_scripts/figure/sara_onioncreek_baseline_vs_ut_sara.png
+    trajectories:
+      - "Baseline 01"
+      - "Baseline 02"
+      - "Baseline 03"
+      - "SARA system 01"
+      - "SARA system 02"
+      - "SARA system 03"
+
+trajectories:
+  - name: "Human Drawn"
+    path: paper_scripts/asset/human_drawn_trajectories/human_baseline_onion_creek_coords.csv
+    format: utm_points
+    color: "black"
+
+  - name: "Baseline 01"
+    path: data_raw/ARL_Jackal/rosbags/2-18-onion-creek/run_10_onion-creek-baseline_2026-02-18-14-13-47/adaptive_lio_aligned_clean.csv
+    format: t_xyr
+    frame: enu
+    color: "firebrick"
+
+  - name: "Baseline 02"
+    path: data_raw/ARL_Jackal/rosbags/2-18-onion-creek/run_11_onion-creek-baseline_2026-02-18-14-21-39/adaptive_lio_aligned_clean.csv
+    format: t_xyr
+    frame: enu
+    color: "orange"
+
+  - name: "Baseline 03"
+    path: data_raw/ARL_Jackal/rosbags/2-18-onion-creek/run_13_onion-creek-baseline_2026-02-18-14-30-52/adaptive_lio_aligned_clean.csv
+    format: t_xyr
+    frame: enu
+    color: "gold"
+
+  - name: "SARA system 01"
+    path: data_raw/ARL_Jackal/rosbags/2-18-onion-creek/run_07_onion-creek_2026-02-18-13-48-48/adaptive_lio_aligned_clean.csv
+    format: t_xyr
+    frame: enu
+    color: "navy"
+
+  - name: "SARA system 02"
+    path: data_raw/ARL_Jackal/rosbags/2-18-onion-creek/run_08_onion-creek_2026-02-18-13-55-28/adaptive_lio_aligned_clean.csv
+    format: t_xyr
+    frame: enu
+    color: "slateblue"
+
+  - name: "SARA system 03"
+    path: data_raw/ARL_Jackal/rosbags/2-18-onion-creek/run_09_onion-creek_2026-02-18-14-00-40/adaptive_lio_aligned_clean.csv
+    format: t_xyr
+    frame: enu
+    color: "deepskyblue"

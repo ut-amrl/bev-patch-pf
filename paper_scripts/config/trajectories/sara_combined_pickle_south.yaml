@@ -1,0 +1,77 @@
+geotiff: data/ARL_Jackal/pickle_campus_EPSG32614_scale03_022126.tiff
+
+viz:
+  alpha: 0.6
+  padding_px: 80
+  linewidth: 5
+  legend:
+    show: false
+    mode: grouped
+    fontsize: 40
+    line_gap_fraction: 0.8
+    group_label_spacing: 0.8
+    group_handle_height: 0.8
+    groups:
+      - label: Baseline
+        members: ["Baseline 01", "Baseline 02", "Baseline 03"]
+      - label: UT-SARA
+        members: ["SARA system 01", "SARA system 02", "SARA system 03"]
+      - label: Human Drawn
+        members: ["Human Drawn"]
+
+figures:
+  - output:
+      path: paper_scripts/figure/sara_pickle_south_human_only.png
+    trajectories: ["Human Drawn"]
+
+  - output:
+      path: paper_scripts/figure/sara_pickle_south_baseline_vs_ut_sara.png
+    trajectories:
+      - "Baseline 01"
+      - "Baseline 02"
+      - "Baseline 03"
+      - "SARA system 01"
+      - "SARA system 02"
+      - "SARA system 03"
+
+trajectories:
+  - name: "Human Drawn"
+    path: paper_scripts/asset/human_drawn_trajectories/human_baseline_pickle_south_coords.csv
+    format: utm_points
+    color: "black"
+
+  - name: "Baseline 01"
+    path: data_raw/ARL_Jackal/rosbags/2-17-pickle/pickle-south/run_09_pickle-south-baseline_2026-02-17-11-34-53/adaptive_lio_aligned_clean.csv
+    format: t_xyr
+    frame: enu
+    color: "firebrick"
+
+  - name: "Baseline 02"
+    path: data_raw/ARL_Jackal/rosbags/2-17-pickle/pickle-south/run_10_pickle-south-baseline_2026-02-17-11-40-41/adaptive_lio_aligned_clean.csv
+    format: t_xyr
+    frame: enu
+    color: "orange"
+
+  - name: "Baseline 03"
+    path: data_raw/ARL_Jackal/rosbags/2-17-pickle/pickle-south/run_12_pickle-south-baseline_2026-02-17-11-52-18/adaptive_lio_aligned_clean.csv
+    format: t_xyr
+    frame: enu
+    color: "gold"
+
+  - name: "SARA system 01"
+    path: data_raw/ARL_Jackal/rosbags/2-17-pickle/pickle-south/run_02_pickle-south-auto_2026-02-17-08-44-34/adaptive_lio_aligned_clean.csv
+    format: t_xyr
+    frame: enu
+    color: "navy"
+
+  - name: "SARA system 02"
+    path: data_raw/ARL_Jackal/rosbags/2-17-pickle/pickle-south/run_02_pickle-south-auto_2026-02-17-08-55-42/adaptive_lio_aligned_clean.csv
+    format: t_xyr
+    frame: enu
+    color: "slateblue"
+
+  - name: "SARA system 03"
+    path: data_raw/ARL_Jackal/rosbags/2-17-pickle/pickle-south/run_04_pickle-south-auto_2026-02-17-09-16-03/adaptive_lio_aligned_clean.csv
+    format: t_xyr
+    frame: enu
+    color: "deepskyblue"

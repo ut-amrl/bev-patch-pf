@@ -1,0 +1,47 @@
+experiment_name: "SARA_teleop_onioncreek"
+
+dataset:
+  name: ARL_SARA
+  geotiff: data/ARL_Jackal/onioncreek_EPSG32614_scale02_022726.tiff
+  scenes:
+    test:
+      - onioncreek_teleop-00_2026-02-18-17-36-11
+      - onioncreek_teleop-01_2026-02-18-17-42-21
+      - onioncreek_teleop-02_2026-02-18-17-51-42
+      - onioncreek_teleop-03_2026-02-18-18-06-23
+      - onioncreek_teleop-04_2026-02-18-18-16-52
+
+methods:
+  - name: Ground Truth
+    base_path: data_raw/ARL_Jackal/extracted
+    traj_file: "{scene}/adaptive_lio_aligned.csv"
+    format: t_xyr
+    color: black
+    reference: true
+
+  - name: Wheel Odometry
+    base_path: data_raw/ARL_Jackal/extracted
+    traj_file: "{scene}/odom_platform.csv"
+    format: t_xyz_qxyzw
+    color: darkgreen
+    odom: true
+    frame: enu
+
+  - name: GPS
+    base_path: data_raw/ARL_Jackal/extracted
+    traj_file: "{scene}/gps.csv"
+    format: t_gps
+    color: firebrick
+
+  - name: BEV-Patch-PF
+    base_path: output/pf/SARA_onioncreek_action_gain_1/BEV-Patch-Net/BEV-Patch-Net_e0_3.58
+    traj_file: "{scene}/pf_traj.csv"
+    format: t_xyr
+    frame: enu
+    color: blue
+
+viz:
+  alpha: 0.5
+  legend:
+    show: false
+    fontsize: 50

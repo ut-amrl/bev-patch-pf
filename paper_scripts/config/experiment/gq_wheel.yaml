@@ -1,0 +1,53 @@
+experiment_name: "GQ_0926_wheel"
+
+dataset:
+  name: GQ
+  geotiff: data/GQ/GQ_EPSG32618_scale03_091025.tiff
+  scenes:
+    seen:
+      - 2024-08-13-11-28-57
+      - 2024-08-13-16-48-47
+    unseen:
+      - 2024-08-15-12-40-46
+      - 2024-08-15-13-08-57
+
+methods:
+  - name: Ground Truth
+    color: black
+    base_path: data/GQ
+    traj_file: "{scene}/gt_odom.csv"
+    format: t_xyr
+    frame: enu
+    reference: true
+
+  - name: Ours
+    color: blue
+    base_path: output/pf/GQ/GeoLoc_v1/GeoLoc_v1_e2_4.07
+    traj_file: "{scene}/pf_traj.csv"
+    format: t_xyr
+    frame: enu
+
+  - name: PyCuVSLAM
+    color: darkgreen
+    base_path: data/GQ
+    traj_file: "{scene}/pycuvslam.csv"
+    format: t_xyz_qxyzw
+    frame: cam
+    odom: true
+
+  - name: Wheel Odom
+    color: purple
+    base_path: data/GQ
+    traj_file: "{scene}/wheel_odom.csv"
+    format: t_xyr
+    frame: enu
+    odom: true
+
+  - name: GPS
+    color: orange
+    base_path: data/GQ
+    traj_file: "{scene}/gps.csv"
+    format: t_gps
+
+viz:
+  alpha: 0.6

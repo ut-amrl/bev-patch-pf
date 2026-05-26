@@ -1,0 +1,39 @@
+root: data/ARL_Jackal
+geotiff: ${root}/pickle_campus_EPSG32614_scale03_022126.tiff
+
+pose:
+  default_file: utm_pose.csv
+  delimiter: ","
+  skip_header: 1
+  has_header: true
+  x_col: x
+  y_col: y
+  scene_pose_files: {}
+
+groups:
+  train:
+    label: Train
+    color: "#0072B0"
+    scene_color_mode: auto_shades
+    shade_strength: 0.35
+    linewidth: 8
+    alpha: 0.8
+    offset_px: [0, 0]
+    scenes:
+      - pickle_south_2025-12-18-10-50-42
+      - run_00_pickle_2026-01-12-15-33-59
+      - run_01_pickle_2026-01-12-16-05-32
+
+viz:
+  figure_size: [20, 20]
+  map_alpha: 0.5
+  padding_px: 80
+  legend_loc: upper left
+  show_legend: false
+  scale_bar_m: 100
+  scale_bar_font_size: 24
+  dpi: 120
+  hide_axes: true
+
+output:
+  path: paper_scripts/figure/footprint/pickle_south_train.png

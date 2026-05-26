@@ -1,0 +1,38 @@
+root: data/ARL_Jackal
+geotiff: ${root}/onioncreek_EPSG32614_scale03_022126.tiff
+
+pose:
+  default_file: utm_pose.csv
+  delimiter: ","
+  skip_header: 1
+  has_header: true
+  x_col: x
+  y_col: y
+  scene_pose_files: {}
+
+groups:
+  train:
+    label: Train
+    color: "#0072B0"
+    scene_color_mode: auto_shades
+    shade_strength: 0.35
+    linewidth: 8
+    alpha: 0.8
+    offset_px: [0, 0]
+    scenes:
+      - onioncreek_2025-11-30-18-28-52
+      - onioncreek_2026-01-29-16-38-31
+
+viz:
+  figure_size: [20, 20]
+  map_alpha: 0.5
+  padding_px: 80
+  legend_loc: upper left
+  show_legend: false
+  scale_bar_m: 100
+  scale_bar_font_size: 24
+  dpi: 120
+  hide_axes: true
+
+output:
+  path: paper_scripts/figure/footprint/onioncreek_train.png

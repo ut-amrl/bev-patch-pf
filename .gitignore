@@ -197,7 +197,15 @@ output
 experiments/
 outputs/
 onnx/
-paper_scripts/
+paper_scripts/*
+!paper_scripts/*.py
+!paper_scripts/config/
+!paper_scripts/config/**
+paper_scripts/__pycache__/
+paper_scripts/asset/
+paper_scripts/figure/
+paper_scripts/output/
+paper_scripts/pf_results/
 *.png
 
 wandb/
