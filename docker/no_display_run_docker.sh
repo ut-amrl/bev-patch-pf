@@ -40,6 +40,7 @@ HOST_BPP_CONFIG_DIR="${SCRIPT_DIR}/../config"
 HOST_OUTPUT_DIR="${SCRIPT_DIR}/../output"
 HOST_DATASET_DIR="${SCRIPT_DIR}/../src/dataset"
 HOST_WANDB_DIR="${SCRIPT_DIR}/../wandb"
+HOST_PAPER_DIR="${SCRIPT_DIR}/../paper_scripts"
 HOST_RBK_CONFIG_DIR="${SCRIPT_DIR}/../config"
 
 
@@ -53,6 +54,7 @@ docker run -it --rm --gpus all \
   -v "${HOST_OUTPUT_DIR}:/home/bpp/bev-patch-pf/output" \
   -v "${HOST_DATASET_DIR}:/home/bpp/bev-patch-pf/src/dataset" \
   -v "${HOST_WANDB_DIR}:/home/bpp/bev-patch-pf/wandb" \
+  -v "${HOST_PAPER_DIR}:/home/bpp/bev-patch-pf/paper_scripts" \
   -v "${HOST_RBK_CONFIG_DIR}:/home/bpp/rosbagkit/config" \
   -w /home/bpp \
   --name bpp-training \
