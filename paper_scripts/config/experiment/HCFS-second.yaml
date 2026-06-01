@@ -1,0 +1,67 @@
+experiment_name: "HCFS-Second"
+
+dataset:
+  name: HCFS-Second
+  geotiff: /home/bpp/data/second_trail_road_loop/second_trail_road_loop.tif
+  scenes:
+    seen:
+      - second_trail_road_loop1
+      - second_trail_road_loop2
+      - second_trail_road_loop4
+      - second_trail_road_loop5
+      - second_trail_road_loop6
+      - second_trail_road_loop7
+      - second_trail_road_loop8
+      - second_trail_road_loop9
+      - second_trail_road_loop10
+      - second_trail_road_loop12
+      - second_trail_road_loop13
+    unseen:
+      - second_trail_road_loop3
+      - second_trail_road_loop11
+
+methods:
+  - name: Ground Truth
+    color: black
+    base_path: /home/bpp/data/second_trail_road_loop
+    traj_file: "{scene}/utm_pose.csv"
+    format: t_xyr
+    frame: enu
+    reference: true
+
+  - name: Public
+    color: green
+    base_path: /home/bpp/bev-patch-pf/output/pf/HCFS-Second-pub-model/BEV-Patch-Net/BEV-Patch-Net_e4_3.85
+    traj_file: "{scene}/pf_traj.csv"
+    format: t_xyr
+    frame: enu
+
+  - name: Fine Tuned
+    color: red
+    base_path: /home/bpp/bev-patch-pf/output/pf/HCFS-Second/BEV-Patch-Net/BEV-Patch-Net_e6_5.05
+    traj_file: "{scene}/pf_traj.csv"
+    format: t_xyr
+    frame: enu
+
+  # - name: Super Odom
+  #   color: orange
+  #   base_path: /home/bpp/data/third_trail_loop
+  #   traj_file: "{scene}/superodom_lio.csv"
+  #   format: t_xyz_qxyzw
+  #   frame: enu
+  #   odom: true
+
+  # - name: PyCuVSLAM
+  #   color: darkgreen
+  #   base_path: data/TartanDrive2
+  #   traj_file: "{scene}/pycuvslam.csv"
+  #   format: t_xyz_qxyzw
+  #   frame: cam
+  #   odom: true
+
+viz:
+  alpha: 0.5
+  legend:
+    show: false
+    loc: upper right
+    fontsize: 35
