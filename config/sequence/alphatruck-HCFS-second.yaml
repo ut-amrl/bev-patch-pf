@@ -1,7 +1,7 @@
 _target_: dataset.alphatruck.AlphaTruckSequence
 name: "HCFS-Second"
 
-root: /home/bpp/data/HCFS/processed/second_trail_road_loop
+root: /scratch/quattro/datasets/HCFS-second_trail_road_loop
 geo_tiff_path: ${.root}/second_trail_road_loop.tif
 
 ground_image_resize: [512, 512]
@@ -21,3 +21,4 @@ scenes:
   - second_trail_road_loop11
   - second_trail_road_loop12
   - second_trail_road_loop13
+  

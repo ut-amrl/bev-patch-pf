@@ -23,19 +23,17 @@ depth_dropout: 0.2
 train_scenes:
   - third_trail_loop1
   - third_trail_loop2
-  - third_trail_loop3
   - third_trail_loop4
   - third_trail_loop5
   - third_trail_loop6
   - third_trail_loop7
-  - third_trail_loop8
   - third_trail_loop9
   - third_trail_loop10
   - third_trail_loop11
   - third_trail_loop12
   - third_trail_loop13
-  - third_trail_loop14
 
 val_scenes:
-  - third_trail_loop4
-  - third_trail_loop14
+  - third_trail_loop3
+  - third_trail_loop8
+    #  - third_trail_loop14 # bad

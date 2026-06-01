@@ -1,11 +1,24 @@
 _target_: dataset.alphatruck.AlphaTruckSequence
 name: "HCFS-Third"
 
-root: /home/bpp/data/HCFS/processed/full-trajectories
+root: /scratch/quattro/datasets/HCFS-third_trail_loop
 geo_tiff_path: ${.root}/third_trail_loop.tif
 
 ground_image_resize: [512, 512]
 aerial_image_resize: [768, 768]
 
 scenes:
-  - third_trail_loop
+  - third_trail_loop1
+  - third_trail_loop2
+  - third_trail_loop3
+  - third_trail_loop4
+  - third_trail_loop5
+  - third_trail_loop6
+  - third_trail_loop7
+  - third_trail_loop8
+  - third_trail_loop9
+  - third_trail_loop10
+  - third_trail_loop11
+  - third_trail_loop12
+  - third_trail_loop13
+#  - third_trail_loop14
