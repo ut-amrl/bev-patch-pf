@@ -32,7 +32,7 @@ class RerunLogger:
         *,
         spawn: bool = False,
         app_id: str = "pf_visualization",
-        show_features: bool = False,
+        show_features: bool = True,
         blueprint_path: str | os.PathLike | None = None,
         **_: object,
     ):
