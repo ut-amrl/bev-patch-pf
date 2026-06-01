@@ -5,7 +5,7 @@ import numpy as np
 import torch
 
 from dataset.common import GeoLocDataset
-from dataset.utils import compute_se3_actions, interpolate_poses, load_csv_columns,load_timestamps, se3_poses_from_rows
+from dataset.utils import compute_se3_actions, interpolate_poses, load_csv_columns, load_timestamps, se3_poses_from_rows
 
 # FAST_LIO_POSE_COLUMNS = ("x", "y", "z", "qx", "qy", "qz", "qw")
 SUPERODOM_POSE_COLUMNS = ("timestamp", "x", "y", "z", "qx", "qy", "qz", "qw")
@@ -14,8 +14,8 @@ SUPERODOM_POSE_COLUMNS = ("timestamp", "x", "y", "z", "qx", "qy", "qz", "qw")
 class AlphaTruckDataset(GeoLocDataset):
     INTRINSIC = torch.tensor(
         [
-            [388.64874267578125, 0.0, 316.8682861328125],
-            [0.0, 388.0560302734375, 244.55877685546875],
+            [393.20782470703125, 0.0, 321.1852111816406],
+            [0.0, 393.20782470703125, 241.01612854003906],
             [0.0, 0.0, 1.0],
         ],
         dtype=torch.float32,
