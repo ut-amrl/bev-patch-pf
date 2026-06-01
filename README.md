@@ -40,7 +40,7 @@ Starting from the `bev-patch-pf` directory, build the image:
 ```
 **Note** that if you do not have a `data` directory containing all your processed data, then you will need to create one. You can also execute the build and run commands from anywhere.
 
-To run the docker container, you must tell `run_docker.sh` where the host `data` directory is located so it can mount it:
+To run the docker container, you must tell `run_docker.sh` where the host `data` directory is located so it can mount it. Your `data` directory will get mounted to `/home/bpp/data`:
 ```bash
 ./docker/run_docker.sh <your-data-dir>
 ```
