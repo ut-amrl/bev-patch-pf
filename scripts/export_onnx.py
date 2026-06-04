@@ -144,6 +144,7 @@ def export_component_onnx(
         input_names=list(inputs.keys()),
         output_names=output_names,
         dynamic_axes=dynamic_axes,
+        dynamo=False,
         do_constant_folding=True,
         training=torch.onnx.TrainingMode.EVAL,
     )
