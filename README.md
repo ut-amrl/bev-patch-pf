@@ -4,7 +4,7 @@
 
 **Particle Filtering with BEV-Aerial Feature Matching for Off-Road Geo-Localization**
 
-[Project Page](https://amrl.cs.utexas.edu/bev-patch-pf) • [Paper (arXiv)](https://arxiv.org/abs/2512.15111) • [Data](https://web.corral.tacc.utexas.edu/texasrobotics/web_UT-SARA-GQ) • [ROS 2 Deployment](https://github.com/ut-amrl/bev-patch-pf_ROS2)
+[Project Page](https://amrl.cs.utexas.edu/bev-patch-pf) • [Paper (arXiv)](https://arxiv.org/abs/2512.15111) • [Data](https://dataverse.tdl.org/dataset.xhtml?persistentId=doi:10.18738/T8/LGV3UO) • [ROS 2 Deployment](https://github.com/ut-amrl/bev-patch-pf_ROS2)
 
 </div>
 
