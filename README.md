@@ -126,3 +126,7 @@ python preprocessing/preprocess_tartandrive.py
   primaryClass  = {cs.RO}
 }
 ```
+
+## License
+
+This code is released under the [MIT License](LICENSE).
