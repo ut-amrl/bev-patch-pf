@@ -67,12 +67,39 @@ Each valid scene should now contain `utm_pose.csv` with: `timestamp`, `x`, `y`, 
 - If a scene is skipped, check the expected paths first.
 - If alignment looks wrong, inspect the original trajectory before re-running alignment.
 
-## Other preprocessing scripts
+## TartanDrive2
+
+Extract the original **bagfiles** (not the KITTI release) using
+[rosbagkit](https://github.com/ut-amrl/rosbagkit) with `timestamp_source: bag`.
+Then synchronize the extracted stereo images and GT odometry:
 
 ```bash
 python preprocessing/preprocess_tartandrive.py \
-    --src /path/to/raw_dataset \
-    --dst /path/to/output_dataset
+    --src /path/to/extracted_dataset --dst /path/to/processed_dataset
 ```
 
-For TartanDrive, this script synchronizes odometry to image timestamps and keeps the longest valid trajectory segment.
+GT output uses x=east, y=north, and heading in radians counterclockwise from east.
+
+**pycuVSLAM:** Install [PyCuVSLAM](https://github.com/nvidia-isaac/cuVSLAM)
+and run in its environment:
+
+```bash
+python preprocessing/run_pycuvslam_tartandrive.py --root /path/to/processed_dataset
+```
+
+This writes `<scene>/pycuvslam.csv`. Published trajectories, matching timestamps,
+calibration, and the GeoTIFF are available in the
+[supplementary directory](https://web.corral.tacc.utexas.edu/texasrobotics/web_UT-SARA-GQ/supplementary/TartanDrive2/).
+
+**FoundationStereo:** Set up [FoundationStereo](https://github.com/NVlabs/FoundationStereo)
+and its `23-51-11` checkpoint. Copy `run_foundationstereo_tartandrive.py`
+from this folder into FoundationStereo's `scripts/`, then run from that repository:
+
+```bash
+python scripts/run_foundationstereo_tartandrive.py \
+    --root /path/to/processed_dataset \
+    --ckpt_dir pretrained_models/23-51-11/model_best_bp2.pth \
+    --scale 1.0 --hiera 1 --valid_iters 16 --remove_invisible 1
+```
+
+This writes `<scene>/depth/*.png` as uint16 depth in millimeters.
