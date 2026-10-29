@@ -117,13 +117,11 @@ python preprocessing/preprocess_tartandrive.py
 ## Citation
 
 ```bibtex
-@misc{lee2025bevpatchpf,
+@inproceedings{lee2026bevpatchpf,
   title         = {BEV-Patch-PF: Particle Filtering with BEV-Aerial Feature Matching for Off-Road Geo-Localization},
   author        = {Lee, Dongmyeong and Quattrociocchi, Jesse and Ellis, Christian and Rana, Rwik and Adkins, Amanda and Uccello, Adam and Warnell, Garrett and Biswas, Joydeep},
-  year          = {2025},
-  eprint        = {2512.15111},
-  archivePrefix = {arXiv},
-  primaryClass  = {cs.RO}
+  booktitle     = {2026 IEEE International Conference on Robotics and Automation (ICRA)},
+  year          = {2026}
 }
 ```
 
